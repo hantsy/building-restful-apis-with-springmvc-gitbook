@@ -1,6 +1,6 @@
-# Overview
+# IDE Setup
 
-Before you write some real world codes, you have to spend some time and have a knowledge of the basic concept of REST architecture.
+Before you write some real world codes, you have to spend some time to prepare the .
 
 ## An introdution to REST
 
