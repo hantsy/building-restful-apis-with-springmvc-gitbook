@@ -77,7 +77,7 @@ Spring Boot 1.4 introduced a new JUnit Runner, `SpringRunner`, which is an alias
 
 	@RunWith(SpringRunner.class)
 
-If you have to use other runner instead of SpringRunner, and want to use the Spring test context in the tests, use `SpringClassRule` and `SpringMethodRule` to fill the gap.
+If you have to use other runners instead of `SpringRunner`, and want to use the Spring test context in the tests, declare a `SpringClassRule` and `SpringMethodRule` in the test to fill the gap.
 
 	@RunWith(AnotherRunner.class)
 	public class SomeTest{
@@ -276,7 +276,7 @@ Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inje
 		}
 	}
 
-In 4.3, the `@Inject` be removed.
+`@Inject` can be removed in Spring 4.3.
 
 	
 ##Spring Security 4.1
@@ -308,7 +308,7 @@ Before 4.1, you can configure `passwordEncoder` and `userDetailsService` via `Au
 	  
 	}
 
-In 4.1, `userDetailsService` and `passwordEncoder` bean can detected, no need to wire them by `AuthenticationManagerBuilder` manually.
+In 4.1, `userDetailsService` and `passwordEncoder` bean can detected, no need to wire them by `AuthenticationManagerBuilder` manually. No need to override the `WebSecurityConfigurerAdapter` class and provide a custom configuration, a generic `WebSecurityConfigurerAdapter` bean is ok .
 
 	@Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -328,15 +328,15 @@ In 4.1, `userDetailsService` and `passwordEncoder` bean can detected, no need to
             protected void configure(HttpSecurity http) throws Exception {//...}
     }	
 
-No need to override the `WebSecurityConfigurerAdapter` class.
+
 
 More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Secuirty documentation.
 
 ##Hibernate 5.2
 
-One of the big change is the packages had been reorganised.
+The biggest change of Hibernate 5.2 is the packages had been reorganised, Hibernate 5.2 is Java 8 ready now.
 
-**hibernate-java8**(Java 8 DateTime support) and **hibernate-entitymanager**(JPA provider bridge) are merged into **hibernate-core**.
+**hibernate-java8** (Java 8 DateTime support) and **hibernate-entitymanager** (JPA provider bridge) are merged into **hibernate-core**.
 
 Remove the following dependencies when upgrade to Hibernate 5.2.
 
@@ -351,7 +351,7 @@ Remove the following dependencies when upgrade to Hibernate 5.2.
 		<version>${hibernate.version}</version>
 	</dependency>
 
-**NOTE**: Hibernate 5.2.0.Final will break some dependencis before Spring 4.3, such as spring-orm, spring-boot-data-jpa-starter which depends on **hibernate-entitymanager**, and Spring Boot 1.4.0.RC1 and Spring 4.3 GA fixed the issues. But I noticed in the Hibernate 5.2.1.Final, the **hibernate-entitymanager** is back.
+**NOTE**:If you are using Spring 4.2 with Hibernate 5.2.0.Final, it could break some dependencis, such as `spring-orm`, `spring-boot-data-jpa-starter` which depends on **hibernate-entitymanager**. Spring Boot 1.4.0.RC1 and Spring 4.3 GA fixed the issues. But I noticed in the Hibernate 5.2.1.Final,  **hibernate-entitymanager** is back.
 
 Hibernate 5.2 also added Java Stream APIs support, I hope it will be available in the next JPA specification.
 
