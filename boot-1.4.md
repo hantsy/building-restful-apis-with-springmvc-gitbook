@@ -91,7 +91,7 @@ If you have to use other runners instead of `SpringRunner`, and want to use the 
 	}
 	
 
-### Test slice
+### Autoconfigure test slice
 
 The most exciting feature provided in Spring Boot 1.4 is it provides capability to test some feature slice, which just pick up essential beans and configuration for the specific purpose based test. 
 
@@ -131,7 +131,7 @@ Have a look at `@DataJpaTest`.
 	@ImportAutoConfiguration
 	public @interface DataJpaTest {}
 
-You can add your autoconfigure annotation to override the default config.
+You can add your `@AutoconfigureXXX` annotation to override the default config.
 
 	@AutoConfigureTestDatabase(replace=NONE)
 	@DataJpaTest
@@ -232,9 +232,9 @@ For example, a RestController can be simplfied by the new annotations, list as t
 |@RequestMapping(value = "/{id}", method = RequestMethod.PUT)|@PutMapping(value = "/{id}")|
 |@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)|@DeleteMapping(value = "/{id}")|
 
-A new `@RestControllerAdvice()` is provided for exception handling,it is combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
+A new `@RestControllerAdvice()` is provided for exception handling, it is combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
 
-For example, in a former Spring Boot version, the exception handler class looks like:
+For example, in the old Spring 4.2, an custom exception handler class looks like the following.
 
 	@ControllerAdvice()
 	public class RestExceptionHandler {
@@ -245,7 +245,7 @@ For example, in a former Spring Boot version, the exception handler class looks 
 		}
 	}
 	
-In Spring Boot 1.4, it becomes:
+In Spring 4.3, it becomes:
 
 	@RestControllerAdvice()
 	public class RestExceptionHandler {
@@ -265,11 +265,6 @@ Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inje
 	@RequestMapping(value = Constants.URI_API_PREFIX + Constants.URI_POSTS)
 	public class PostController {
 
-		private static final Logger log = LoggerFactory.getLogger(PostController.class);
-
-		
-		private final BlogService blogService;
-
 		@Inject
 		public PostController(BlogService blogService) {
 			this.blogService = blogService;
@@ -277,6 +272,15 @@ Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inje
 	}
 
 `@Inject` can be removed in Spring 4.3.
+
+	@RestController
+	@RequestMapping(value = Constants.URI_API_PREFIX + Constants.URI_POSTS)
+	public class PostController {
+
+		public PostController(BlogService blogService) {
+			this.blogService = blogService;
+		}
+	}
 
 	
 ##Spring Security 4.1
@@ -308,7 +312,7 @@ Before 4.1, you can configure `passwordEncoder` and `userDetailsService` via `Au
 	  
 	}
 
-In 4.1, `userDetailsService` and `passwordEncoder` bean can detected, no need to wire them by `AuthenticationManagerBuilder` manually. No need to override the `WebSecurityConfigurerAdapter` class and provide a custom configuration, a generic `WebSecurityConfigurerAdapter` bean is ok .
+In 4.1, `userDetailsService` and `passwordEncoder` bean can be detected automaticially. No need to wire them by `AuthenticationManagerBuilder` manually. No need to override the `WebSecurityConfigurerAdapter` class and provide a custom configuration, a generic `WebSecurityConfigurerAdapter` bean is enough.
 
 	@Bean
     public BCryptPasswordEncoder passwordEncoder() {
