@@ -49,7 +49,7 @@ Instead of:
 
 Spring Boot 1.4 introduced a new annotation `@SpringBootTest` to unite the old `@IntegrationTest`, `@WebIntegrationTest`, `@SpringApplicationConfiguration` etc, in before versions.
 
-A `webEnvironment` property in the `@SpringBootTest` is use for deciding if set up a web environment for test.
+A `webEnvironment` property of `@SpringBootTest` is use for deciding if set up a web environment for test.
 
 There are some configuration options of the `webEnvironment`.
 
@@ -58,18 +58,18 @@ There are some configuration options of the `webEnvironment`.
 * **DEFINED_PORT** provides an embedded web environment and run the application on a defined port.
 * **RANDOM_PORT** provides an embedded web environment, but use a random port number.
 
-If **RANDOM_PORT** is used, add `@LocalSeverPort` annotation to an `int` field will inject the port number at runtime.
+If **RANDOM_PORT** is used, add `@LocalSeverPort` annotation on an `int` field will inject the port number at runtime.
 
 	@LocalSeverPort
 	int port;
 	
-Which replaced the `@Value("${local.server.port}")`	in Spring Boot 1.3.
+`@LocalServerPort` replaces the `@Value("${local.server.port}")` of Spring Boot 1.3.
 
 Similarly, **classes** property is similar to the one of `@SpringApplicationConfiguration`. You can specify the configuration classes to be loaded for the test.
 
 	@SpringBootTest(classes = {Application.class, SwaggerConfig.class})
 
-Which is equivalent to `@SpringApplicationConfiguration(classes={...})` in Spring Boot 1.3.
+The above code is equivalent to `@SpringApplicationConfiguration(classes={...})` in Spring Boot 1.3.
 
 ### SpringRunner
 
@@ -108,9 +108,35 @@ Currently there is a series of new annotations available for this purpose.
 		
 	}
 	
-**DataJpaTest** will prepare an embedded database and provides basic JPA environment for the test.	
+**@DataJpaTest** will prepare an embedded database and provides basic JPA environment for the test.	
 		
 **@RestClientTest** provides REST client environment for the test, esp the RestTemplateBuilder etc.
+
+These annotations are not composed with `SpringBootTest`, they are combined with a series of `AutoconfigureXXX` and a `@TypeExcludesFilter` annotations.
+
+Have a look at `@DataJpaTest`.
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Inherited
+	@BootstrapWith(SpringBootTestContextBootstrapper.class)
+	@OverrideAutoConfiguration(enabled = false)
+	@TypeExcludeFilters(DataJpaTypeExcludeFilter.class)
+	@Transactional
+	@AutoConfigureCache
+	@AutoConfigureDataJpa
+	@AutoConfigureTestDatabase
+	@AutoConfigureTestEntityManager
+	@ImportAutoConfiguration
+	public @interface DataJpaTest {}
+
+You can add autoconfigure to override the default config.
+
+	@AutoConfigureTestDatabase(replace=NONE)
+	@DataJpaTest
+	public class TestClass{
+	}
 
 ###JsonComponent
 
@@ -157,7 +183,7 @@ But if you have a custom `ObjectMapper` configuration, you have to install `Json
         return builder;
     } 
 
-##MockBean and MockSpy
+###MockBean and MockSpy
 
 Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockBean` and `MockSpy` annotations.
 	
@@ -169,28 +195,44 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 		
 	}
 	
+###TestConfiguration and TestComponent
+
+`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. Generic `Configuration` and `Component` can not be scanned by default in test.
+
+	public class TestClass{
+	
+		@TestConfiguration
+		static class TestConfig{
+		}
+		
+		@TestComponent
+		static class TestBean{}
+	
+	}
+
+	
 ##Spring 4.3
+
+There are a few features added in 4.3, the following is impressive.
+
+###Composed annotations
 
 The effort of [Spring Composed](https://github.com/sbrannen/spring-composed) are merged into Spring 4.3. 
 
-A series of new composed annotations are available.
+A series of new composed annotations are available, but the naming is a little different from Spring Composed.
 
 For example, a RestController can be simplfied by the new annotations, list as the following table.
 
 |Spring 4.2| Spring 4.3|
 |----|----|
 |@RequestMapping(value = "", method = RequestMethod.GET)|@GetMapping()|
-| @ResponseBody|
 |@RequestMapping(value = "", method = RequestMethod.POST)|@PostMapping()|
-| @ResponseBody
 |@RequestMapping(value = "/{id}", method = RequestMethod.PUT)|@PutMapping(value = "/{id}")|
-| @ResponseBody
 |@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)|@DeleteMapping(value = "/{id}")|
-| @ResponseBody
- 
-A new `@RestControllerAdvice()` is provided for exception handling, you can remove the `@ResponseBody` on the `@ExceptionHandler` method.
 
-For example, in a former Spring Boot, the exception handler class looks like:
+A new `@RestControllerAdvice()` is provided for exception handling,it is combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
+
+For example, in a former Spring Boot version, the exception handler class looks like:
 
 	@ControllerAdvice()
 	public class RestExceptionHandler {
@@ -211,15 +253,88 @@ In Spring Boot 1.4, it becomes:
 		}
 	}
 	
+###Auto constructor injection
 
- 
+If there is a only one constructor defined in the bean, the arguments as dependencies will be injected by default.	
+
+Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inject the dependencies.
+
+	@RestController
+	@RequestMapping(value = Constants.URI_API_PREFIX + Constants.URI_POSTS)
+	public class PostController {
+
+		private static final Logger log = LoggerFactory.getLogger(PostController.class);
+
+		
+		private final BlogService blogService;
+
+		@Inject
+		public PostController(BlogService blogService) {
+			this.blogService = blogService;
+		}
+	}
+
+In 4.3, the `@Inject` be removed.
+
+	
 ##Spring Security 4.1
+
+The Java configuration is improved. 
+
+Before 4.1, you can configure `passwordEncoder` and `userDetailsService` via `AuthenticationManagerBuilder`.
+
+	@Configuration
+	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+	protected static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+	  @Override
+	  protected void configure(HttpSecurity http) throws Exception {}
+
+	  @Override
+	  protected void configure(AuthenticationManagerBuilder auth)
+			  throws Exception {
+		  auth
+			  .userDetailsService(new SimpleUserDetailsServiceImpl(userRepository))
+			  .passwordEncoder(passwordEncoder);
+	  }
+
+	  @Bean
+	  @Override
+	  public AuthenticationManager authenticationManagerBean() throws Exception {
+		  return super.authenticationManagerBean();
+	  }
+	  
+	}
+
+In 4.1, `userDetailsService` and `passwordEncoder` bean can detected, no need to wire them by `AuthenticationManagerBuilder` manually.
+
+	@Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder;
+    }
+    
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository){
+        return new SimpleUserDetailsServiceImpl(userRepository);
+    }
+    
+    @Bean
+    public WebSecurityConfigurerAdapter securityConfig(){
+        return new WebSecurityConfigurerAdapter() {
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {//...}
+    }	
+
+No need to override the `WebSecurityConfigurerAdapter` class.
+
+More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Secuirty documentation.
 
 ##Hibernate 5.2
 
-One of the big change is the packages have been reorganised.
+One of the big change is the packages had been reorganised.
 
-***hibernate-java8**(Java 8 DateTime support) and **hibernate-entitymanager**(JPA provider bridge) are merged into **hibernate-core**.
+**hibernate-java8**(Java 8 DateTime support) and **hibernate-entitymanager**(JPA provider bridge) are merged into **hibernate-core**.
 
 Remove the following dependencies when upgrade to Hibernate 5.2.
 
@@ -234,7 +349,7 @@ Remove the following dependencies when upgrade to Hibernate 5.2.
 		<version>${hibernate.version}</version>
 	</dependency>
 
-**NOTE**: Hibernate 5.2.0.Final will break some dependencis before Spring 4.3, such as spring-orm, spring-boot-data-jpa-starter which depends on **hibernate-entitymanager**, and Spring Boot 1.4.0.RC1 and Spring 4.3 GA fix the issues. But I noticed in the Hibernate 5.2.1.Final, the **hibernate-entitymanager** is back.
+**NOTE**: Hibernate 5.2.0.Final will break some dependencis before Spring 4.3, such as spring-orm, spring-boot-data-jpa-starter which depends on **hibernate-entitymanager**, and Spring Boot 1.4.0.RC1 and Spring 4.3 GA fixed the issues. But I noticed in the Hibernate 5.2.1.Final, the **hibernate-entitymanager** is back.
 
 Hibernate 5.2 also added Java Stream APIs support, I hope it will be available in the next JPA specification.
 
