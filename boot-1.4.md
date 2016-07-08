@@ -180,15 +180,17 @@ For example, a RestController can be simplfied by the new annotations, list as t
 |Spring 4.2| Spring 4.3|
 |----|----|
 |@RequestMapping(value = "", method = RequestMethod.GET)|@GetMapping()|
- @ResponseBody
+| @ResponseBody|
 |@RequestMapping(value = "", method = RequestMethod.POST)|@PostMapping()|
- @ResponseBody
+| @ResponseBody
 |@RequestMapping(value = "/{id}", method = RequestMethod.PUT)|@PutMapping(value = "/{id}")|
- @ResponseBody
+| @ResponseBody
 |@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)|@DeleteMapping(value = "/{id}")|
- @ResponseBody
+| @ResponseBody
  
-A new `@RestControllerAdvice()` is provided for exception handling, you can remove the `@ResponseBody` in the method.
+A new `@RestControllerAdvice()` is provided for exception handling, you can remove the `@ResponseBody` on the `@ExceptionHandler` method.
+
+For example, in a former Spring Boot, the exception handler class looks like:
 
 	@ControllerAdvice()
 	public class RestExceptionHandler {
@@ -199,7 +201,7 @@ A new `@RestControllerAdvice()` is provided for exception handling, you can remo
 		}
 	}
 	
-Becomes:
+In Spring Boot 1.4, it becomes:
 
 	@RestControllerAdvice()
 	public class RestExceptionHandler {
