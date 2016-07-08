@@ -131,7 +131,7 @@ Have a look at `@DataJpaTest`.
 	@ImportAutoConfiguration
 	public @interface DataJpaTest {}
 
-You can add autoconfigure to override the default config.
+You can add your autoconfigure annotation to override the default config.
 
 	@AutoConfigureTestDatabase(replace=NONE)
 	@DataJpaTest
@@ -140,9 +140,9 @@ You can add autoconfigure to override the default config.
 
 ###JsonComponent
 
-`@JsonComponent` is a specific `@Component` to register custome Jackson based `JsonSerializer` and `JsonDeserializer`. 
+`@JsonComponent` is a specific `@Component` to register custome Jackson `JsonSerializer` and `JsonDeserializer`. 
 
-For example, a custom `JsonSerializer` and `JsonDeserializer` are registered for `LocalDateTime` class.
+For example, custom `JsonSerializer` and `JsonDeserializer` are use for serializing and deserializing `LocalDateTime` instance.
 
 	@JsonComponent
 	@Slf4j
@@ -169,9 +169,9 @@ For example, a custom `JsonSerializer` and `JsonDeserializer` are registered for
 		}
 	}
 
-If you are using the default config, it will be activated by default when the application.
+If you are using the Spring Boot default Jackson configuration, it will be activated by default when the application starts up.
 
-But if you have a custom `ObjectMapper` configuration, you have to install `JsonComponentModule` manually, else the `@JsonComponent` annotated bean will not be discovered.
+But f you customized a `ObjectMapper` bean in your configuration, the autoconfiguration of `ObjectMapper` is disabled. You have to install `JsonComponentModule` manually, else the `@JsonComponent` annotated bean will not be discovered at all.
 
     @Bean
     public Jackson2ObjectMapperBuilder objectMapperBuilder(JsonComponentModule jsonComponentModule) {
@@ -183,7 +183,7 @@ But if you have a custom `ObjectMapper` configuration, you have to install `Json
         return builder;
     } 
 
-###MockBean and MockSpy
+###Mocking and spying Beans
 
 Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockBean` and `MockSpy` annotations.
 	
@@ -194,6 +194,8 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 		private UserRepository userRepository;
 		
 	}
+	
+	
 	
 ###TestConfiguration and TestComponent
 
@@ -353,3 +355,10 @@ Remove the following dependencies when upgrade to Hibernate 5.2.
 
 Hibernate 5.2 also added Java Stream APIs support, I hope it will be available in the next JPA specification.
 
+##Source code
+
+Clone the codes from Github account.
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
+	
+	
