@@ -1,17 +1,34 @@
+# Overview
+
+In this sample application, we will implement a simple blog application.
+
+
+##Features 
+
+For a end user view, a basic Blog application should includes the following features.
+
+1. Login.
+2. Logout.
+3. Change password.
+4. Change user profile.
+5. Post a new blog entry.
+6. Comment on the existing blog after logged in.
+
+An Admin user should have some privileges to do some advanced operations, e.g.
+
+1. User management.
+2. Others.
+
+You can consider the above list as the original requirements gathered from the customer, you could have to combine the technical factors when you plan your project.
+
+## Project Plan
+
+I would like embrace Agile in my projects, especially the scrum methodology. 
+
+1. Put all features into a backlog.
+2. Order the features by their priorities.
+3. Split them in several sprints.
 
 
 
-Before test the codes in your local system, you have to install the latest JDK 8 and Apache Maven.
-
- * JDK 8
-
-     Oracle Java 8 is required, go to [Oracle Java website](http://java.oracle.com) to download it and install into your system. 
-     
-     Optionally, you can set **JAVA\_HOME** environment variable and add *&lt;JDK installation dir>/bin* in your **PATH** environment variable.
-
- * Apache Maven
-   
-     Download the latest Apache Maven from [http://maven.apache.org](http://maven.apache.org), and uncompress it into your local system. 
-    
-     Optionally, you can set **M2\_HOME** environment varible, and also do not forget to append *&lt;Maven Installation dir>/bin* your **PATH** environment variable.  
 

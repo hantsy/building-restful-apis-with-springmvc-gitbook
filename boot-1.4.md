@@ -45,7 +45,7 @@ Instead of:
 
 `spring-boot-starter-test` includes the essential dependencies for test, such as json-path, assertj, hamcrest, mockito etc.
 	
-###New annotation @SpringBootTest
+###@SpringBootTest
 
 Spring Boot 1.4 introduced a new annotation `@SpringBootTest` to unite the old `@IntegrationTest`, `@WebIntegrationTest`, `@SpringApplicationConfiguration` etc, in before versions.
 
@@ -71,7 +71,7 @@ Similarly, **classes** property is similar to the one of `@SpringApplicationConf
 
 The above code is equivalent to `@SpringApplicationConfiguration(classes={...})` in Spring Boot 1.3.
 
-### A New JUnit based SpringRunner
+### SpringRunner
 
 Spring Boot 1.4 introduced a new JUnit Runner, `SpringRunner`, which is an alias for the `SpringJUnit4ClassRunner`.
 
@@ -95,7 +95,7 @@ If you have to use other runners instead of `SpringRunner`, and want to use the 
 
 The most exciting feature provided in Spring Boot 1.4 is it provides capability to test some feature slice, which just pick up essential beans and configuration for the specific purpose based test. 
 
-There is a series of new annotations available for this purpose.
+Currently there is a series of new annotations available for this purpose.
 
 **@JsonTest** provides a simple Jackson environment to test the json serialization and deserialization.
 
@@ -138,9 +138,9 @@ You can add your `@AutoconfigureXXX` annotation to override the default config.
 	public class TestClass{
 	}
 
-###Easy customsizing Jackson serialization and deserialization
+###JsonComponent
 
-`@JsonComponent` is a specific `@Component` to register custom Jackson `JsonSerializer` and `JsonDeserializer`. 
+`@JsonComponent` is a specific `@Component` to register custome Jackson `JsonSerializer` and `JsonDeserializer`. 
 
 For example, custom `JsonSerializer` and `JsonDeserializer` are use for serializing and deserializing `LocalDateTime` instance.
 
@@ -199,7 +199,7 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 	
 ###TestConfiguration and TestComponent
 
-`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. The generic `Configuration` and `Component` can not be scanned in test.
+`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. Generic `Configuration` and `Component` can not be scanned by default in test.
 
 	public class TestClass{
 	
@@ -211,36 +211,7 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 		static class TestBean{}
 	
 	}
-    
-###Logging
 
-In Spring Root 1.4, log4j 1.x support is discontinued, other logging options include:
-
-* Apache Log4j 2.x
-* Logback
-
-Logback is highly recommended by Spring Boot. 
-
-Remove log4j dependencies and log4j configuration file(*log4j.xml* or *log4j.properties*) if it exists.
-
-Add logback dependencies.
-
-  <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-  </dependency>
-  <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-  </dependency>
-  <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-  </dependency>
-
-I would like use Logback with Sl4j APIs, add slf4j dependencies as above.
-
-If you want to control more details of the logging configuration, create your own **logback.xml** or **spring-logback.xml** file.
 	
 ##Spring 4.3
 
@@ -261,7 +232,7 @@ For example, a RestController can be simplfied by the new annotations, list as t
 |@RequestMapping(value = "/{id}", method = RequestMethod.PUT)|@PutMapping(value = "/{id}")|
 |@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)|@DeleteMapping(value = "/{id}")|
 
-A new `@RestControllerAdvice()` is provided for exception handling, it is the combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
+A new `@RestControllerAdvice()` is provided for exception handling, it is combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
 
 For example, in the old Spring 4.2, an custom exception handler class looks like the following.
 
@@ -286,7 +257,7 @@ In Spring 4.3, it becomes:
 	
 ###Auto constructor injection
 
-If there is only one constructor defined in the bean, the arguments as dependencies will be injected by default.	
+If there is a only one constructor defined in the bean, the arguments as dependencies will be injected by default.	
 
 Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inject the dependencies.
 
@@ -314,7 +285,7 @@ Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inje
 	
 ##Spring Security 4.1
 
-The Java configuration support is improved. 
+The Java configuration is improved. 
 
 Before 4.1, you can configure `passwordEncoder` and `userDetailsService` via `AuthenticationManagerBuilder`.
 
@@ -363,7 +334,7 @@ In 4.1, `userDetailsService` and `passwordEncoder` bean can be detected automati
 
 
 
-More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Security documentation.
+More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Secuirty documentation.
 
 ##Hibernate 5.2
 

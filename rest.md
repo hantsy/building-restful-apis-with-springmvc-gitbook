@@ -1,8 +1,34 @@
-# An introduction to REST
+# Overview
 
-Before you write some real world codes, you have to spend some time to prepare the .
+In this sample application, we will implement a simple blog application.
 
-## 
 
-**REST** is the abbreviation of *Representational State Transfer*. The term **REST** was introduced and defined in 2000 by Roy Fielding in his doctoral dissertation, [Architectural Styles and
-the Design of Network-based Software Architectures](http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm). For Chinese users, you can find a [Chinese translation copy](http://www.infoq.com/cn/minibooks/dissertation-rest-cn) from [InfoQ.com](http://www.infoq.com).
+##Features 
+
+For a end user view, a basic Blog application should includes the following features.
+
+1. Login.
+2. Logout.
+3. Change password.
+4. Change user profile.
+5. Post a new blog entry.
+6. Comment on the existing blog after logged in.
+
+An Admin user should have some privileges to do some advanced operations, e.g.
+
+1. User management.
+2. Others.
+
+You can consider the above list as the original requirements gathered from the customer, you could have to combine the technical factors when you plan your project.
+
+## Project Plan
+
+I would like embrace Agile in my projects, especially the scrum methodology. 
+
+1. Put all features into a backlog.
+2. Order the features by their priorities.
+3. Split them in several sprints.
+
+
+
+

@@ -1,9 +1,10 @@
 # Summary
 
-* [Introduction](README.md)
+* [Overview](overview.md)
 * [A introduction to REST](rest.md)
 * [Getting Started](getting-started.md)
 * [Building REST API](build-rest.md)
+* [Exception handling](exception.md)
 * [Testing](testing.md)
 * [Visualize REST API with Swagger](swagger.md)
 * [Secures APIs](security.md)
