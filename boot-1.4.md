@@ -214,7 +214,7 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
     
 ###Logging
 
-In Spring Root 1.4, log4j 1.x support is removed, other options include:
+In Spring Root 1.4, log4j 1.x support is removed, other  logging options include:
 
 * Apache Log4j 2.x
 * Logback
