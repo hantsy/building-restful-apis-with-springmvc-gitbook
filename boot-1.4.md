@@ -261,7 +261,7 @@ For example, a RestController can be simplfied by the new annotations, list as t
 |@RequestMapping(value = "/{id}", method = RequestMethod.PUT)|@PutMapping(value = "/{id}")|
 |@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)|@DeleteMapping(value = "/{id}")|
 
-A new `@RestControllerAdvice()` is provided for exception handling, it is combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
+A new `@RestControllerAdvice()` is provided for exception handling, it is the combination of `@ControllerAdvice` and `@ResponseBody`. You can remove the `@ResponseBody` on the `@ExceptionHandler` method when use this new annotation.
 
 For example, in the old Spring 4.2, an custom exception handler class looks like the following.
 
