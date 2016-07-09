@@ -286,7 +286,7 @@ In Spring 4.3, it becomes:
 	
 ###Auto constructor injection
 
-If there is a only one constructor defined in the bean, the arguments as dependencies will be injected by default.	
+If there is only one constructor defined in the bean, the arguments as dependencies will be injected by default.	
 
 Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inject the dependencies.
 
