@@ -240,7 +240,7 @@ Add logback dependencies.
 
 I would like use Logback with Sl4j APIs, add slf4j dependencies as above.
 
-If you want to control the logging details, create your own **logback.xml** or **spring-logback.xml** file.
+If you want to control more details of the logging configuration, create your own **logback.xml** or **spring-logback.xml** file.
 	
 ##Spring 4.3
 
