@@ -71,7 +71,7 @@ Similarly, **classes** property is similar to the one of `@SpringApplicationConf
 
 The above code is equivalent to `@SpringApplicationConfiguration(classes={...})` in Spring Boot 1.3.
 
-### A New JUnit SpringRunner
+### A New JUnit based SpringRunner
 
 Spring Boot 1.4 introduced a new JUnit Runner, `SpringRunner`, which is an alias for the `SpringJUnit4ClassRunner`.
 
