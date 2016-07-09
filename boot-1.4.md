@@ -138,7 +138,7 @@ You can add your `@AutoconfigureXXX` annotation to override the default config.
 	public class TestClass{
 	}
 
-###JsonComponent
+###Easy customsizing Jackson serialization and deserialization
 
 `@JsonComponent` is a specific `@Component` to register custome Jackson `JsonSerializer` and `JsonDeserializer`. 
 
