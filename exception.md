@@ -1,0 +1,131 @@
+#Handles Exceptions
+
+In the real world application, the exception path of the work flow can be wrapped as exception, and throw it at runtime.
+
+For example, when a user tries to register in this application. The server side should check if the input username is existed, if the username is taken by other users, the server should stop the registration flow and wraps the message into `UsernameWasTakenException` and throws it. Later the APIs should translate it to client friend message and reasonable HTTP status code, and finally they are sent to client and notify the user.
+
+##Define Exceptions
+
+Define an exeption which stands for the exception path. For example, `ResourceNotFoundException` indicates an resource is not found in the applicatin when query the resource by id.
+
+	public class ResourceNotFoundException extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
+
+		private final Long id;
+
+		public ResourceNotFoundException(Long id) {
+			this.id = id;
+		}
+
+		public Long getId() {
+			return id;
+		}
+	}
+
+##Throws the exception
+
+In our service, check the resource existance, and throws the `ResourceNotFoundException` when the resource is not found.	
+
+    public PostDetails findPostById(Long id) {
+
+        Assert.notNull(id, "post id can not be null");
+
+        log.debug("find post by id@" + id);
+
+        Post post = postRepository.findOne(id);
+
+        if (post == null) {
+            throw new ResourceNotFoundException(id);
+        }
+
+        return DTOUtils.map(post, PostDetails.class);
+    }
+	
+##Translates exceptions
+
+In the web APIs, the exception can be caught and converted into user friendly message.
+
+Spring provides a built-in `ResponseEntityExceptionHandler` to process the exception and tranlate them into REST API friendly messages.
+
+You can extend this class and override the exeption hanlder methods, or add your exception hanlder.
+
+	@ControllerAdvice(annotations = RestController.class)
+	public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+		private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
+
+		@ExceptionHandler(value = {ResourceNotFoundException.class})
+		@ResponseBody
+		public ResponseEntity<ResponseMessage> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+			if (log.isDebugEnabled()) {
+				log.debug("handling ResourceNotFoundException...");
+			}
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	
+In the above code, `ResourceNotFoundException` is handled by the `RestExceptionHandler`, and send a 404 HTTP status code to the client.
+
+##Handles bean validation constraints
+
+For user input form validation, most of time, we could needs the detailed info the validaiton cosntraints. 
+
+Spring supports JSR 303(Bean validation) natively, the bean validation constraints error can be gathered by `BindingResult` in the controller class.
+
+    public ResponseEntity<ResponseMessage> createPost(@RequestBody @Valid PostForm post, BindingResult errResult) {
+
+        log.debug("create a new post");
+        if (errResult.hasErrors()) {
+            throw new InvalidRequestException(errRusult);
+        }
+		//...
+		
+In the controller class, if the `BindingResult` has errors, then wraps the error info into an exception.
+
+Handles it in the `RestExceptionHandler`.
+
+	@ExceptionHandler(value = {InvalidRequestException.class})
+    public ResponseEntity<ResponseMessage> handleInvalidRequestException(InvalidRequestException ex, WebRequest req) {
+        if (log.isDebugEnabled()) {
+            log.debug("handling InvalidRequestException...");
+        }
+
+        ResponseMessage alert = new ResponseMessage(
+            ResponseMessage.Type.danger,
+            ApiErrors.INVALID_REQUEST,
+            messageSource.getMessage(ApiErrors.INVALID_REQUEST, new String[]{}, null));
+
+        BindingResult result = ex.getErrors();
+
+        List<FieldError> fieldErrors = result.getFieldErrors();
+
+        if (!fieldErrors.isEmpty()) {
+            fieldErrors.stream().forEach(e -> {
+                alert.addError(e.getField(), e.getCode(), e.getDefaultMessage());
+            });
+        }
+
+        return new ResponseEntity<>(alert, HttpStatus.UNPROCESSABLE_ENTITY);
+    }	
+		
+The detailed validation errors are wrapped as content and sent to the client, and a HTTP status to indicate the form data user entered is invalid.
+
+##Exception and HTTP status
+
+All Spring built-in exceptions have been handled and mapped to a HTTP status code. Read the `ResponseEntityExceptionHandler` code or javadoc for more details.
+
+All business related exceptions should designed and converted to a valid HTTP status code and essential messages.
+
+Some HTTP status codes are used frequently.
+
+* 200 OK
+* 201 Created
+* 204 NO Content
+* 400 Bad Resquest
+* 401 Not Authoried
+* 403 Forbidden
+* 409 Conflict
+
+More details about HTTP status code, please read [https://httpstatuses.com/](https://httpstatuses.com/) or W3C [HTTP Status definition](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html).
+
+	

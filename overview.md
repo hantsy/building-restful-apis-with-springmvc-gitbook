@@ -1,7 +1,8 @@
-Introduction
-============
+#Overview
+
 
 In this step-by-step minibook, I will demonstrate how to implement a RESTful web application with Spring MVC and AngularJS.
+#Overview
 
 
 ##Prerequisite
