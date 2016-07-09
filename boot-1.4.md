@@ -45,7 +45,7 @@ Instead of:
 
 `spring-boot-starter-test` includes the essential dependencies for test, such as json-path, assertj, hamcrest, mockito etc.
 	
-###@SpringBootTest
+###New annotation @SpringBootTest
 
 Spring Boot 1.4 introduced a new annotation `@SpringBootTest` to unite the old `@IntegrationTest`, `@WebIntegrationTest`, `@SpringApplicationConfiguration` etc, in before versions.
 
@@ -363,7 +363,7 @@ In 4.1, `userDetailsService` and `passwordEncoder` bean can be detected automati
 
 
 
-More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Secuirty documentation.
+More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Security documentation.
 
 ##Hibernate 5.2
 
