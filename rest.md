@@ -1,4 +1,4 @@
-# An introdution to REST
+# An introduction to REST
 
 Before you write some real world codes, you have to spend some time to prepare the .
 
