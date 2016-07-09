@@ -314,7 +314,7 @@ Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inje
 	
 ##Spring Security 4.1
 
-The Java configuration is improved. 
+The Java configuration support is improved. 
 
 Before 4.1, you can configure `passwordEncoder` and `userDetailsService` via `AuthenticationManagerBuilder`.
 
