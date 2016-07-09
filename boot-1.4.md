@@ -140,7 +140,7 @@ You can add your `@AutoconfigureXXX` annotation to override the default config.
 
 ###Easy customsizing Jackson serialization and deserialization
 
-`@JsonComponent` is a specific `@Component` to register custome Jackson `JsonSerializer` and `JsonDeserializer`. 
+`@JsonComponent` is a specific `@Component` to register custom Jackson `JsonSerializer` and `JsonDeserializer`. 
 
 For example, custom `JsonSerializer` and `JsonDeserializer` are use for serializing and deserializing `LocalDateTime` instance.
 
@@ -240,7 +240,7 @@ Add logback dependencies.
 
 I would like use Logback with Sl4j APIs, add slf4j dependencies as above.
 
-
+If you want to control the logging details, create your own **logback.xml** or **spring-logback.xml** file.
 	
 ##Spring 4.3
 
