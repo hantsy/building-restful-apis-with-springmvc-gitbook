@@ -199,7 +199,7 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 	
 ###TestConfiguration and TestComponent
 
-`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. Generic `Configuration` and `Component` can not be scanned by default in test.
+`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. The generic `Configuration` and `Component` can not be scanned in test.
 
 	public class TestClass{
 	
