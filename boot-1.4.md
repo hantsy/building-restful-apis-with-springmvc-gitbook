@@ -95,7 +95,7 @@ If you have to use other runners instead of `SpringRunner`, and want to use the 
 
 The most exciting feature provided in Spring Boot 1.4 is it provides capability to test some feature slice, which just pick up essential beans and configuration for the specific purpose based test. 
 
-Currently there is a series of new annotations available for this purpose.
+There is a series of new annotations available for this purpose.
 
 **@JsonTest** provides a simple Jackson environment to test the json serialization and deserialization.
 
