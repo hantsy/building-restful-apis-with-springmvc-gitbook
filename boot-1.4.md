@@ -221,6 +221,24 @@ In Spring Root 1.4, log4j 1.x support is removed, other logging options include:
 
 Logback is highly recommended by Spring Boot. 
 
+Remove log4j dependencies and log4j configuration file.
+
+Add logback dependencies.
+
+  <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+  </dependency>
+  <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+  </dependency>
+  <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+  </dependency>
+
+I would like use Logback with Sl4j APIs, add slf4j dependencies as above.
 
 
 	
