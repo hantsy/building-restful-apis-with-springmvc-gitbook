@@ -35,9 +35,9 @@ In these posts, it will not cover all Spring and Java EE features, but the follo
 
 * Spring Security
 
-	In a traditional Java EE application, JAAS is the specification which is responsible for Authentication and Authoriation. But it is too tied within a  container, and different container providers have their extension support, which make it is not friendly for program approaches.
+	In a traditional Java EE application, JAAS is the specification which is responsible for Authentication and Authorization. But it is very dependent on a specific container. Although most containers include a visual web UI for user maangement. But if you want to manage users and roles in program way.
 
-	Spring Security fills this field, which makes the security controll is very easy, and provides a simple programming model to extend it. Spring Security is also compatible with JAAS specification, provides related facilities at runtime for your application. 
+	Spring Security fills this field, which makes the security control become easy, and provides a simple programming model. Spring Security is also compatible with JAAS specification, and provides JAAS integration at runtime. 
 
 	Java EE 8 is trying to introduce a new Security specification to fix this issue.
 
