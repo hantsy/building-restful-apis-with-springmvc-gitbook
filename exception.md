@@ -1,8 +1,11 @@
 #Handles Exceptions
 
-In the real world application, the exception path of the work flow can be wrapped as exception, and throw it at runtime.
+In the real world applications, a user story can be described as different flows.
 
-For example, when a user tries to register in this application. The server side should check if the input username is existed, if the username is taken by other users, the server should stop the registration flow and wraps the message into `UsernameWasTakenException` and throws it. Later the APIs should translate it to client friend message and reasonable HTTP status code, and finally they are sent to client and notify the user.
+1. The execution works as expected and get success finally. 
+2. Some conditions are not satisfied and the flow should be intercepted and notify users.
+
+For example, when a user tries to register an account in this application. The server side should check if the existance of the input username, if the username is taken by other users, the server should stop the registration flow and wraps the message into `UsernameWasTakenException` and throws it. Later the APIs should translate it to client friend message and reasonable HTTP status code, and finally they are sent to client and notify the user.
 
 ##Define Exceptions
 

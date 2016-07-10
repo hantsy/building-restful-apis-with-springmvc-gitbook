@@ -1,24 +1,88 @@
 #Overview
 
+In this minibook, I will demonstrate how to implement a RESTful web application with Spring MVC and AngularJS. 
 
-In this step-by-step minibook, I will demonstrate how to implement a RESTful web application with Spring MVC and AngularJS.
-#Overview
+It will be consist of a series of small posts as time goes by. Every post is a standalone chapter focused on a topic.
+
+##Assumption
+
+I assume you are a Java developer and have some experience of Spring framework.
+
+Else you should learn the basic Java and Java EE knowledge, and master basic usage of Spring framework.
+
+The official [Oracle Java tutorial](https://docs.oracle.com/javase/tutorial/) and [Java EE tutorial](https://docs.oracle.com/javaee/7/tutorial) are ready for Java newbies.
+
+Read the [Spring official guides](https://spring.io/guides) to getting started with Spring framework.
+
+In these posts, it will not cover all Spring and Java EE features, but the following technologies will be used.
+
+* Spring framework
+
+Spring framework is the infrastructure framework of this sample application. 
+
+It provides a lightweight IOC container and a simple POJO based programming model, and also contains lots of glue codes for Java EE specification support and popular open source framework integration. 
+
+With the benifit of Spring, it makes Java EE development without container become true, and also eases the Java EE testing. In the past years, Spring was considered as the defacto standard of Java EE development.
 
 
-##Prerequisite
+* Spring MVC
 
-I assume you have some experience of Spring, especially Spring MVC.
+One of the most attractive features provided in Spring framework is the Spring MVC framework, like the old Struts framework, it is a web framework based on Servlet specification, and implements the standard MVC(Model, View, Controller) patterns. 
 
-In this sample application, the following technologies are used to build the backend REST API.
+Spring MVC supports lots of view presentations, for traditional web application or RESTful APIs. In this sample application, we only use Spring MVC as the REST API producer and exposes the APIs to client.
 
-1. **Spring** framework is the infrastructure of the sample codes.
-2. **JPA** is responsible of the data persistence, and **Hibernate** is chosen as the JPA provider in the sample code. **Spring Data(JPA)** is used to simplify the data operations.
-3. **Spring MVC** is used to produce REST APIs.
-4. **Spring Security** is the guard of this application and it will secure the REST APIs.
+For the traditional web development, check my samples hosted on [Spring4 sandbox](https://github.com/hantsy/spring4-sandbox).
 
-The frontend UI is consist of the static pages, which is written with AngularJS/Bootstrap. It will be a SPA(Single Page Application) application.
+* Spring Security
 
-I will introduce you how to create a Blog sample application step by step in the following sections.
+In a traditional Java EE application, JAAS is the specification which is responsible for Authentication and Authoriation. But it is too tied within a  container, and different container providers have their extension support, which make it is not friendly for program approaches.
+
+Spring Security fills this field, which makes the security controll is very easy, and provides a simple programming model to extend it. Spring Security is also compatible with JAAS specification, provides related facilities at runtime for your application. 
+
+Java EE 8 is trying to introduce a new Security specification to fix this issue.
+
+* JPA
+
+Based on JDBC specification, JPA provides a high level ORM abstraction and brings OOP philosophy to interact with traditional RDBMS.
+
+* Hibernate
+
+In this sample application, Hibernate is used as a JPA provider. Most of time, we are trying to avoid to use a provider specific APIs, make the codes can be run in other containers.
+
+* Spring Data JPA
+
+Spring Data JPA simplifies using JPA in Spring, including a united `Repository` to perform simple CRUD without coding, simplfied type safe Criteria Query and QueryDSL integration, a simple auditing implementation, simple pagination of query result, Java 8 Optional and DateTime support etc.
+
+Check the Spring Data samples in [Spring4 sandbox](https://github.com/hantsy/spring4-sandbox).
+ 
+We also used some third party utilities, such as [Lombok project](https://projectlombok.org/) to remove the tedious getters and setters of POJOs. 
+
+For testing purpose, Spring test/JUnit, Mockito, Rest Assured will be used.
+
+##Smaple application
+
+In order to demonstrate building RESTful APIs from scrach, I will implement a simple Blog system to explain in details.
+
+Imagine there are two roles will use this blog.
+
+* ROLE_ADMIN, the administrative user.
+* ROLE_USER, the normal user.
+
+A normal user can do the most common work.
+
+1. Create a new post.
+2. Update post.
+3. View post detail.
+4. Query posts by keyword.
+5. Delete posts.
+6. Comment on posts.
+
+A administrater should has more advanced permissions, eg. he can manage the system users.
+
+1. Create a new user.
+2. Update uesr
+3. Delete user
+4. Query users by keyword.
 
 ##Sample codes
 
@@ -26,33 +90,9 @@ The complete sample codes are hosted on my Github.com account.
 
 [https://github.com/hantsy/angularjs-springmvc-sample](https://github.com/hantsy/angularjs-springmvc-sample)
 
-Before test the codes in your local system, you have to install the latest JDK 8 and Apache Maven.
+A Spring Boot based envolved version provides more featuers to demonstrate the cutting-edge technologies.
 
- * JDK 8
+[https://github.com/hantsy/angularjs-springmvc-sample-boot](https://github.com/hantsy/angularjs-springmvc-sample-boot)
 
-     Oracle Java 8 is required, go to [Oracle Java website](http://java.oracle.com) to download it and install into your system. 
-     
-     Optionally, you can set **JAVA\_HOME** environment variable and add *&lt;JDK installation dir>/bin* in your **PATH** environment variable.
-
- * Apache Maven
-   
-     Download the latest Apache Maven from [http://maven.apache.org](http://maven.apache.org), and uncompress it into your local system. 
-    
-     Optionally, you can set **M2\_HOME** environment varible, and also do not forget to append *&lt;Maven Installation dir>/bin* your **PATH** environment variable.  
-
-Follow the following the steps to run this project.
-
-  1. Clone the codes.
-
-    <pre>
-    git clone https://github.com/hantsy/angularjs-springmvc-sample
-    </pre>
-  
-  2. And enter the root folder, run `mvn tomcat7:run` to start up an embedded tomcat7 to serve this application.
-  
-    <pre>
-    mvn tomcat7:run
-    </pre>
-
-  3. Open your browser, and navigate [http://localhost:8080/angularjs-springmvc-sample/](http://localhost:8080/angularjs-springmvc-sample/).
+Please read the README.md file in these respositories and run them under your local system.
 
