@@ -28,11 +28,11 @@ Let's create a Spring MVC project, and begin to build the backend REST APIs.
 	
 	Extract the files into your local disk.
 	
-	You can select your favorate IDEs, such as Spring Tool Suite, NetBeans, Intellij IDEA etc. All of these have good Maven and Gradle support.
+	You can select your favorate IDEs, such as NetBeans, Intellij IDEA etc. All of these have good Maven and Gradle support.
 	
 ##Create project skeleton
 
-In these days, some poeples are using Spring Boot to get autoconfiguration support and quick build lifecycle. For those new to Spring user, the regular approache(none Sprinb Boot) is more easy to understand Spring essential configuration. 
+In these days, more and more poeples are using Spring Boot to get autoconfiguration support and quick build lifecycle. For those new to Spring, the regular approache(none Sprinb Boot) is more easy to understand Spring essential configuration. 
 
 ###Regular web project
 
@@ -240,6 +240,19 @@ In these days, some poeples are using Spring Boot to get autoconfiguration suppo
    
    Every configuration should be annotated with `@Configuration`.
    
+   It is recommended to slipt the configurations into different classes by categories. eg. In this sample the configuration classes includes:
+   
+   * `AppConfig` is the base configuration.
+   * `DataSourceConfig` is the configuration for `DataSource`.
+   * `JpaConfig` is the configuration for JPA and transacation.
+   * `DataJpaConfig` is the configuration for Spring Data JPA extension support.
+   * `SecurityConfig` is the Spring Security configuration.
+   * `Jackson2ObjectMapperConfig` is the customized Jackson `ObjectMapper` bean.
+   * `MessageSourceConfig` is the configuration for `MessageSource`.
+   * `WebConfig` is the configuration for Spring MVC.
+   * `SwaggerConfig` is the configuration for Swagger schema APIs.
+   
+
    `@ComponentScan` defines the component scanning strategy for loading Spring `Component` at the application starts up. 
    
    The **excludeFilters** property define rules to exclude some components. `AppConfig` only scans none web beans, and `WebConfig` only scan web relates beans.
