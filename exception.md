@@ -26,7 +26,7 @@ Define an exeption which stands for the exception path. For example, `ResourceNo
 		}
 	}
 
-##Throws the exception
+##Throws exceptions in service
 
 In our service, check the resource existance, and throws the `ResourceNotFoundException` when the resource is not found.	
 
@@ -69,7 +69,7 @@ You can extend this class and override the exeption hanlder methods, or add your
 	
 In the above code, `ResourceNotFoundException` is handled by the `RestExceptionHandler`, and send a 404 HTTP status code to the client.
 
-##Handles bean validation constraints
+##Handles bean validation failure
 
 For user input form validation, most of time, we could needs the detailed info the validaiton cosntraints. 
 

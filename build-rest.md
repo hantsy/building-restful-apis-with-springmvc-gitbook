@@ -394,7 +394,9 @@ A *POST* method on */api/posts* is use for creating a new post, return HTTP stat
 
 ## Run 
 
-For none Spring Boot application, run it a general web application in IDE. Or via maven tomcat plugin.
+For none Spring Boot application, run it as a general web application in IDE. 
+
+Tomcat also provides maven plugin for those maven users.
 
 	<plugin>
 		<groupId>org.apache.tomcat.maven</groupId>
