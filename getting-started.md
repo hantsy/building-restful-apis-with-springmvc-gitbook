@@ -171,49 +171,49 @@ In these days, more and more poeples are using Spring Boot to get autoconfigurat
 
 	Declare a `AbstractAnnotationConfigDispatcherServletInitializer` bean.
 
-	@Order(0)
-	public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+		@Order(0)
+		public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-		@Override
-		protected Class<?>[] getRootConfigClasses() {
-			return new Class[] {
-					AppConfig.class, //
-					DataSourceConfig.class, //            
-					JpaConfig.class, //
-					DataJpaConfig.class,//
-					SecurityConfig.class,//   
-					Jackson2ObjectMapperConfig.class,//
-					MessageSourceConfig.class
-			};
+			@Override
+			protected Class<?>[] getRootConfigClasses() {
+				return new Class[] {
+						AppConfig.class, //
+						DataSourceConfig.class, //            
+						JpaConfig.class, //
+						DataJpaConfig.class,//
+						SecurityConfig.class,//   
+						Jackson2ObjectMapperConfig.class,//
+						MessageSourceConfig.class
+				};
+			}
+
+			@Override
+			protected Class<?>[] getServletConfigClasses() {
+				return new Class[] {
+					WebConfig.class, //
+					SwaggerConfig.class //
+				};
+			}
+
+			@Override
+			protected String[] getServletMappings() {
+				return new String[] { "/" };
+			}
+
+			@Override
+			protected Filter[] getServletFilters() {
+				CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+				encodingFilter.setEncoding("UTF-8");
+				encodingFilter.setForceEncoding(true);
+
+				return new Filter[] { encodingFilter };
+			}
+
 		}
-
-		@Override
-		protected Class<?>[] getServletConfigClasses() {
-			return new Class[] {
-				WebConfig.class, //
-				SwaggerConfig.class //
-			};
-		}
-
-		@Override
-		protected String[] getServletMappings() {
-			return new String[] { "/" };
-		}
-
-		@Override
-		protected Filter[] getServletFilters() {
-			CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
-			encodingFilter.setEncoding("UTF-8");
-			encodingFilter.setForceEncoding(true);
-
-			return new Filter[] { encodingFilter };
-		}
-
-	}
 	
 	Serlvet 3.0 provides a new feature *ServletInitializer* to configure web applciation without *web.xml*. 
 	
-	Spring has its *WebApplicationInitializer* interface, there are a few classes extends this interface, `AbstractAnnotationConfigDispatcherServletInitializer` includes configuration of Spring Dispatch Servlet, and leave some room to customize `DispatchServlet`. 
+	Spring has its *WebApplicationInitializer* interface, there are a few classes implement this interface, `AbstractAnnotationConfigDispatcherServletInitializer` includes configuration of Spring Dispatch Servlet, and leave some room to customize `DispatchServlet`. 
 	
 	`getRootConfigClasses` specifies the configuration classes should be loaded for the Spring infrastrucuture.
 	
@@ -337,15 +337,23 @@ In these days, more and more poeples are using Spring Boot to get autoconfigurat
 	
 ###Spring Boot project
 
-[SPRING INITIALIZR](http://start.spring.io) provides the simplest way to start a Spring Boot project.
+[SPRING INITIALIZR](http://start.spring.io) provides a simple way to start a Spring Boot project.
 
-Open https://start.spring.io, search *Web*, *Secrity*, *JPA* in the **Dependencies** input box, select the items in the dropdown menus.
+Open https://start.spring.io, search *Web*, *Secrity*, *JPA*, *Validation* in the **Dependencies** input box, select the items in the dropdown menus.
 
 ![start.png](https://github.com/hantsy/angularjs-springmvc-sample-gitbook/blob/master/start.png)
 
-Then press ALT+Enter or click **Generate** button to download the generated codes.
+Then press ALT+Enter or click **Generate** button to download the generated codes in zip archive.
 
-Open the pom.xml, looks like:
+Extract the files into local system.
+
+It only includes a few files:
+
+* Maven project configuration *pom.xml*, and maven wrapper files.
+* A Spring Boot specific `Application` class as the application entry.
+* A dummy test for the `Application` class.
+
+Open the *pom.xml*, it looks like:
 
 	<?xml version="1.0" encoding="UTF-8"?>
 	<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
