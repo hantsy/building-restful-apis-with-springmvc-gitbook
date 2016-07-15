@@ -14,7 +14,7 @@ The basic flow of TDD can be summaried as:
 2. Code the implementation, and run test again and again, untill the test get passed.
 3. Adjust the test to add more featurs, and refactor the codes, till all considerations are included.
 
-But some developers prefers writing codes firstly and then write tests for them, it is OK. There is no policy to force you accept TDD. For a skilled developer, both can get production in work.
+But some developers prefer writing codes firstly and then write tests to verify them, it is OK. There is no policy to force you accept TDD. For a skilled developer, both are productive in work.
 
 We have written some codes in the early posts, now it is time to add some test codes to show up how to test Spring components.
 
@@ -305,7 +305,7 @@ The test result should be shown as below.
 	
 ##Test Controller
 
-Spring provides a sort of mock APIs to emulate the Servlet container environment, thus it is possbile to test MVC related feature without a real container.
+Spring provides a sort of mock APIs to emulate a Servlet container environment, thus it is possbile to test MVC related feature without a real container.
 
 ###Use MockMvc with mock service
 
@@ -460,7 +460,7 @@ Like the former `MockBlogServiceTest`, we can mock the controller's dependencies
 
 	}
 
-In the `setup` method, `mvc = standaloneSetup(postController)` is trying to setup a MockMvc for the test. The test codes are easy to understand.
+In the `setup` method, `mvc = standaloneSetup(postController)` is trying to setup a `MockMvc` for controller. The test codes are easy to understand.
 
 ###MockMvc with a real database	
 
@@ -622,9 +622,9 @@ OK, now try to verify everything works in a real container.
 		}
 	}
 
-`RestTemplate` is use for interaction with remote REST API, this test act as a real user, and shake hands with our backend through REST APIs.
+`RestTemplate` is use for interaction with remote REST API, this test acts as a remote client, and shake hands with our backend through REST APIs.
 
-`BasicAuthRestTemplate` is a helper subclass to process *BASIC* authentication.
+`BasicAuthRestTemplate` is a helper class to process *BASIC* authentication.
 
 	public class BasicAuthRestTemplate extends RestTemplate {
 
@@ -667,7 +667,10 @@ OK, now try to verify everything works in a real container.
 		}
 	}
 
-To run this test successfully, you have to configure *maven-failsafe-plugin* to start up a servlet container before test is running and shutdown the servlet container after the test is completed.
+To run this test successfully, you have to configure *maven-failsafe-plugin* to set up a servlet container.
+
+* Start up container before test is running 
+* Shutdown the servlet container after the test is completed
 
 	<plugin>
 		<groupId>org.apache.maven.plugins</groupId>
