@@ -32,9 +32,13 @@ Let's create a Spring MVC project, and begin to build the backend REST APIs.
 	
 ##Create project skeleton
 
-In these days, more and more poeples are using Spring Boot to get autoconfiguration support and quick build lifecycle. For those new to Spring, the regular approache(none Sprinb Boot) is more easy to understand Spring essential configuration. 
+In these days, more and more poeples are using Spring Boot to get autoconfiguration support and quicker build lifecycle. 
 
-###Regular web project
+For those new to Spring, the regular approache(none Sprinb Boot) is more easy to understand Spring essential configurations. 
+
+Let's us create a Maven based Java EE 7 web application to introduce how to configure a Spring MVC web application in details, then switch to Spring Boot, thus you can compare these two approaches, and understand how Spring Boot simplifies configurations.
+
+###Create a regular web project
 
 1. Create a Maven web project.
 
@@ -265,8 +269,7 @@ In these days, more and more poeples are using Spring Boot to get autoconfigurat
 	   
 	   }
 	
-	Generally, `WebMvcConfigurerAdapter` is use for customizing MVC details. `SpringDataWebConfiguration` is a subclass of `WebMvcConfigurerAdapter`, it is from Spring data project, and add pagination, sort, and domain object conversion support. Open `SpringDataWebConfiguration` and research yourself.
-	
+	Generally, `WebMvcConfigurerAdapter` is use for customizing MVC details. `SpringDataWebConfiguration` is a subclass of `WebMvcConfigurerAdapter`, it is from Spring data project, and add pagination, sort, and domain object conversion support. Open the source code of `SpringDataWebConfiguration` and research yourself.
 	
 	`SecurityConfig` is the Spring security configuration details.
 	
@@ -335,7 +338,7 @@ In these days, more and more poeples are using Spring Boot to get autoconfigurat
 	
 	Get the [codes](https://github.com/hantsy/angularjs-springmvc-sample) from my github account to explore all configuration classes.
 	
-###Spring Boot project
+###Create a Spring Boot project
 
 [SPRING INITIALIZR](http://start.spring.io) provides a simple way to start a Spring Boot project.
 
@@ -345,7 +348,7 @@ Open https://start.spring.io, search *Web*, *Secrity*, *JPA*, *Validation* in th
 
 Then press ALT+Enter or click **Generate** button to download the generated codes in zip archive.
 
-Extract the files into local system.
+Extract the files into your local system.
 
 It only includes a few files:
 
@@ -414,8 +417,10 @@ Open the *pom.xml*, it looks like:
 			</plugins>
 		</build>
 	</project>
-
-Besides the starter we selected, it also includes a starter for test, and Spring Boot maven plugin which is easy to run the project on a embedded Tomcat.
+	
+* The package type **jar** which will includes an embedded tomcat at build time.	
+* Every starter will handle transitive dependencies. Besides those starters we selected, it also includes a starter for test purpose and add the popular test dependencies, such as hamcrest, assertj, mockito etc.
+* *Spring Boot maven plugin* allow you run the project on the embedded Tomcat.
 
 Another important file is the entry class of this sample application.
 
@@ -427,6 +432,10 @@ Another important file is the entry class of this sample application.
 		}
 	}
 
-Besides these, nothing! Where is the configurations. Spring Boot internally used plenty of auto-configuration mechanism to simplfy the configuration progress for developers. For this project, it configured a simple BASIC authentication by default, if you add a H2 database, it will configure datasource, transacation manager automaticially. If you want to customize your application, put your own config properties in the application.properties(also support YAML, groovy) of this project.
+Besides these, nothing! Where are the configuration files?
+
+Spring Boot internally used plenty of auto-configuration mechanism to simplfy the configuration progress for developers. For this project, it configured a simple BASIC authentication by default. If you add a H2 database or other JDVC drivers, it will configure a datasource and transacation manager automaticially. 
+
+If you want to customize your application, just put your config properties in the *application.properties* of this project, it will override the default configuration. Spring Boot also supports YAML, groovy format for application configuration.
 
 Get the [codes](https://github.com/hantsy/angularjs-springmvc-sample-boot) from my github account to view the details.

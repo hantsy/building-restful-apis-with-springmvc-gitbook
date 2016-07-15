@@ -1,24 +1,26 @@
 #Testing
 
-Before release your applicaiton to the world, you have to prove it work as expected.
+Before release your applicaiton to the public world, you have to make sure it works as expected.
 
-Testing is the effective way to prove the codes correct.
+Testing is the most effective way to prove your codes correct.
 
 ##Test driven development
 
-In the XP and Agile world, lots of developers apply TDD in daily work.
+In the XP and Agile world, lots of developers are TDD advocate, and use it in daily work.
 
-1. Write a test firstly, and run test you will get failure, the failure indicates what to be implemented.
-2. Code the implementation, and run test, untill the test passed.
-3. Adjust test and refactor the codes, till all considerations are included.
+The basic flow of TDD can be summaried as:
 
-But some developers like write the codes and then write test for them, it is OK. There is no policy to force you accept TDD. For a skilled developer, both can get production in development.
+1. Write a test first, then run test and get failure, failure info indicates what to do(You have not written any codes yet).
+2. Code the implementation, and run test again and again, untill the test get passed.
+3. Adjust the test to add more featurs, and refactor the codes, till all considerations are included.
 
-We have written some codes in the early posts, now it is time to add some test codes.
+But some developers prefers writing codes firstly and then write tests for them, it is OK. There is no policy to force you accept TDD. For a skilled developer, both can get production in work.
 
-Spring provides a test context environment, support JUnit and TestNG.
+We have written some codes in the early posts, now it is time to add some test codes to show up how to test Spring components.
 
-In this sample applcation, I will use JUnit as test runner, also use [Mockito](http://mockito.org) to test service in isolation, and use [Rest Assured](http://rest-assured.io/) fluent APIs to test REST from client view.
+Spring provides a test context environment for developers, it supports JUnit and TestNG.
+
+In this sample applcation, I will use JUnit as test runner, also use [Mockito](http://mockito.org) to test service in isolation, and use [Rest Assured](http://rest-assured.io/) BDD like fluent APIs to test REST from client view.
 
 ##A simple JUnit test
 
@@ -62,7 +64,7 @@ A classic JUnit test looks like this.
 
 	}
 
-`@BeforeClass` and `AfterClass` method must be *static*, will be executed when the test class constructed and destoryed.
+`@BeforeClass` and `AfterClass` method must be *static*, these will be executed after the test class is constructed and before it is destoryed.
 
 `@Before` and `@After` will be executed around a test case.
 
@@ -72,7 +74,7 @@ Run the test in command line.
 
 	mvn test -Dtest=PostTest
 
-You could the following output test summary.	
+You could see the following output summary for this test.	
 
 	-------------------------------------------------------
 	 T E S T S
@@ -83,14 +85,20 @@ You could the following output test summary.
 	Results :
 
 	Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+	
+`Post` is a simple POJO, does not depend on other dependencies.	
 
 ##Test Service
 
-`BlogService` depends on `PostRepository`, but most of time, we only want to check business logic in the `BlogService` and assume the `PostRepository` worked as expected, it is easy to focus on testing `BlogService`. Mockito provides simplest approaches to mock the dependencies and provides an isolation environment to test `BlogService`.
+`BlogService` depends on `PostRepository`, but most of time, we only want to check if the business logic and flow correct in the `BlogService` and assume the dependency `PostRepository` are always working as expected. Thus it is easy to focus on testing `BlogService` itself. 
+
+Mockito provides the simplest approaches to mock the dependencies, and setup the assumption, and provides an isolation environment to test `BlogService`.
 
 ### Test BlogService in isolation
 
-Create a mocked `PostRepository`, when invoke methods of `PostRepository`, it will return the mocked data for test, and does not hit real database.
+Mocks `PostRepository`, when invoke methods of `PostRepository`, return the dummy data we assumed. Mockito gives us a simple way to complete the assumption progress.
+
+Create a `MockDataConfig` configuration class in test package.
 
 	@Configuration
 	public class MockDataConfig {
@@ -139,7 +147,7 @@ Create a mocked `PostRepository`, when invoke methods of `PostRepository`, it wi
 		}
 	}
 
-Create `MockBlogServiceTest`, used the `MockDataConfig` to load configuration for the test.
+Create `MockBlogServiceTest` for `BlogService`, used `MockDataConfig` to load configurations.
 
 	@RunWith(SpringJUnit4ClassRunner.class)
 	@ContextConfiguration(classes = {MockDataConfig.class})
@@ -157,7 +165,7 @@ Create `MockBlogServiceTest`, used the `MockDataConfig` to load configuration fo
 
 `PostRepository` and `CommentRepository` are mocked object defined in the `MockDataConfig`.
 
-Add a test method in `BlogService`.
+Add a test method in `MockBlogServiceTest`.
 
     @Test
     public void testSavePost() {
@@ -174,15 +182,18 @@ Add a test method in `BlogService`.
 		//...
 	}	
 
-In the `MockDataConfig`, the mocked `PostRepository` save post and return a post instance with Id: 1L.	
-We can also test if the exception works as expected in the `MockDataConfig`.
+In the above test, asserts id value of the returned post is 1L. 
+
+Have a look at `MockDataConfig`, when calls  save method of `PostRepository` and return a dummy post instance which id is 1L.	
+
+We can also test if the exception threw as expected in the `MockDataConfig`.
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetNoneExistingPost() {
         blogService.findPostById(1000L);
     }
 	
-Run test in command line window.
+Run the test in command line tools.
 
 	mvn test -Dtest=MockBlogServiceTest
 	
@@ -203,7 +214,7 @@ You will see the test result like.
 
 We have known `BlogService` works when we mocked the dependencies. 
 
-Now we can write a test to check if it works against a real database.
+Now we write a test to check if it works against a real database.
 
 	@RunWith(SpringJUnit4ClassRunner.class)
 	@ContextConfiguration(classes = {AppConfig.class, DataSourceConfig.class, DataJpaConfig.class, JpaConfig.class})
@@ -272,15 +283,15 @@ Now we can write a test to check if it works against a real database.
 
 	}
 	
-In the `@Before` method, all Post data are cleared for each tests, and saving a `Post` for further test assertion. 
+In the `@Before` method, all Post data are cleared for each tests, and save a `Post` for further test assertion. 
 
-The above codes are similar with early Mockito version, the main difference is we have switched configuraiton to a real database. Check the `@ContextConfiguration` annotated on `BlogServiceTest`.
+The above codes are similar with early Mockito version, the main difference is we have switched configuraitons to a real database. Check the `@ContextConfiguration` annotated on `BlogServiceTest`.
 
-Run the test again.
+Run the test.
 
 	mvn test -Dtest=BlogServiceTest
 
-The test result will be shown as below.
+The test result should be shown as below.
 
 	-------------------------------------------------------
 	 T E S T S
@@ -755,7 +766,146 @@ In the console, after all unit tess are done, it will start jetty and deploy the
 	[INFO]
 	[INFO] --- maven-failsafe-plugin:2.12.4:verify (verify) @ angularjs-springmvc-sample ---	
 
-After the test is done, it tries to shutdown jetty.	
+As you see in the console, after the test is done, it is trying to shutdown jetty.	
 
-If you would like research the Rest Assured and JBehave in Spring projects, it is available in the [Spring Boot version](https://github.com/hantsy/angularjs-springmvc-sample-boot), check out the codes yourself.
+###Rest Assured
+
+Rest Assured provides BDD like syntax, such as *given*, *when*, *then*, it is friendly for those familiar with BDD.
+
+	@RunWith(SpringRunner.class)
+	@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+	@Slf4j
+	public class RestAssuredApplicationTest extends WebIntegrationTestBase {
+
+
+		@Before
+		public void beforeTest() {
+			super.setup();
+			RestAssured.port = port;
+		}
+
+		@Test
+		public void testDeletePostNotExisted() {
+			String location = "/api/posts/1000";
+
+			given()
+					.auth().basic(USER_NAME, PASSWORD)
+					.contentType(ContentType.JSON)
+					.when()
+					.delete(location)
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_NOT_FOUND);
+		}
+
+		@Test
+		public void testGetPostNotExisted() {
+			String location = "/api/posts/1000";
+
+			given()
+					.auth().basic(USER_NAME, PASSWORD)
+					.contentType(ContentType.JSON)
+					.when()
+					.get(location)
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_NOT_FOUND);
+		}
+
+		@Test
+		public void testPostFormInValid() {
+			PostForm form = new PostForm();
+
+			given()
+					.auth().basic(USER_NAME, PASSWORD)
+					.body(form)
+					.contentType(ContentType.JSON)
+					.when()
+					.post("/api/posts")
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_BAD_REQUEST);
+		}
+
+		@Test
+		public void testPostCRUD() {
+			PostForm form = new PostForm();
+			form.setTitle("test title");
+			form.setContent("test content");
+
+			Response response = given()
+					.auth().basic(USER_NAME, PASSWORD)
+					.body(form)
+					.contentType(ContentType.JSON)
+					.when()
+					.post("/api/posts")
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_CREATED)
+					.and()
+					.header("Location", containsString("/api/posts/"))
+					.extract().response();
+
+			String location = response.header("Location");
+
+			log.debug("header location value @" + location);
+
+			given().auth().basic(USER_NAME, PASSWORD)
+					.contentType(ContentType.JSON)
+					.when()
+					.get(location)
+					.then()
+					.assertThat()
+					.body("title", is("test title"))
+					.body("content", is("test content"));
+
+			PostForm updateForm = new PostForm();
+			updateForm.setTitle("test udpate title");
+			updateForm.setContent("test update content");
+
+			given()
+					.auth().basic(USER_NAME, PASSWORD)
+					.body(updateForm)
+					.contentType(ContentType.JSON)
+					.when()
+					.put(location)
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_NO_CONTENT);
+
+			given().auth().basic(USER_NAME, PASSWORD)
+					.contentType(ContentType.JSON)
+					.when()
+					.get(location)
+					.then()
+					.assertThat()
+					.body("title", is("test udpate title"))
+					.body("content", is("test update content"));
+
+			given()
+					.auth().basic(USER_NAME, PASSWORD)
+					.contentType(ContentType.JSON)
+					.when()
+					.delete(location)
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_NO_CONTENT);
+
+			given().auth().basic(USER_NAME, PASSWORD)
+					.contentType(ContentType.JSON)
+					.when()
+					.get(location)
+					.then()
+					.assertThat()
+					.statusCode(HttpStatus.SC_NOT_FOUND);
+
+		}
+
+	}
+
+This test is also run as client, and interacts with backend via REST API.
+
+The above Rest Assured sample codes are available in the [Spring Boot version](https://github.com/hantsy/angularjs-springmvc-sample-boot), check out the codes and experience yourself.
+
+It also includes a simple JBehave sample, if you are a JBehave user, you maybe interested in it.
 	
