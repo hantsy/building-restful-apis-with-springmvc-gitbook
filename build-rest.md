@@ -1,6 +1,20 @@
-#Build REST APIs
+#Building REST API
 
-As stated in before posts, we are going to build a Blog sample REST APIs.
+As stated in before posts, we are going to build a Blog system.
+
+To demonstrate REST API, we use a simple `Post` entity to persist blog entries, and expose the CRUD operations via REST APIs to client applications. In the real world, the client applications can be a website, a desktop application, or a mobile application.
+
+Following the REST API convention and HTTP protocol specification, the post APIs can be designed as the following table.
+
+|Uri|Http Method|Request|Response|Description|
+|---|---|---|---|---|
+|/posts|GET||200, [{'id':1, 'title'},{}]|Get all posts|
+|/posts|POST|{'title':'test title','content':'test content'}|201|Create a new post|
+|/posts/{id}|GET||200, {'id':1, 'title'}|Get a post by id|
+|/posts/{id}|PUT|{'title':'test title','content':'test content'}|204|Update a post|
+|/posts/{id}|DELETE||204|Delete a post|
+
+Next, we begin to create the domain models: `Post`.
 
 ## Models
 
