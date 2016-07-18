@@ -5,7 +5,7 @@ Spring Boot 1.4 is a big jump, and introduced lots of new test facilities and al
 ##Spring Boot 1.4
 
 
-### New test purpose starter
+### New starter:spring-boot-starter-test
 
 Spring Boot 1.4 brings a new starter for test scope, named `spring-boot-starter-test`.
 
@@ -45,7 +45,7 @@ Instead of:
 
 `spring-boot-starter-test` includes the essential dependencies for test, such as json-path, assertj, hamcrest, mockito etc.
 	
-###@SpringBootTest
+###New annotation: @SpringBootTest
 
 Spring Boot 1.4 introduced a new annotation `@SpringBootTest` to unite the old `@IntegrationTest`, `@WebIntegrationTest`, `@SpringApplicationConfiguration` etc, in before versions.
 
@@ -71,9 +71,9 @@ Similarly, **classes** property is similar to the one of `@SpringApplicationConf
 
 The above code is equivalent to `@SpringApplicationConfiguration(classes={...})` in Spring Boot 1.3.
 
-### SpringRunner
+###New JUnit Runner: SpringRunner
 
-Spring Boot 1.4 introduced a new JUnit Runner, `SpringRunner`, which is an alias for the `SpringJUnit4ClassRunner`.
+Spring 1.4 introduced a new JUnit Runner, `SpringRunner`, which is an alias for the `SpringJUnit4ClassRunner`.
 
 	@RunWith(SpringRunner.class)
 

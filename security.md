@@ -53,11 +53,98 @@ If you want to store users into your database, firstly create a custom `UserDeta
 		}
 
 	}
+	
+`User` class implements `UserDetails`.
 
-Then replace above `inMemoryAuthentication` configuration with your `UserDetailsService`.	
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Entity
+	@Table(name = "users")
+	public class User implements UserDetails, Serializable {
 
-	auth.userDetailsService(new SimpleUserDetailsServiceImpl(userRepository))
-		.passwordEncoder(passwordEncoder);
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Id()
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "id")
+		private Long id;
+
+		@Column(name = "username")
+		private String username;
+
+		@Column(name = "password")
+		private String password;
+
+		@Column(name = "name")
+		private String name;
+
+		@Column(name = "email")
+		private String email;
+
+		@Column(name = "role")
+		private String role;
+
+		@Column(name = "created_date")
+		@CreatedDate
+		private LocalDateTime createdDate;
+
+		public String getName() {
+			if (this.name == null || this.name.trim().length() == 0) {
+				return this.username;
+			}
+			return name;
+		}
+
+		@Override
+		public Collection<? extends GrantedAuthority> getAuthorities() {
+			return Arrays.asList(new SimpleGrantedAuthority("ROLE_" + this.role));
+		}
+
+		@Override
+		public String getPassword() {
+			return this.password;
+		}
+
+		@Override
+		public String getUsername() {
+			return this.username;
+		}
+
+		@Override
+		public boolean isAccountNonExpired() {
+			return true;
+		}
+
+		@Override
+		public boolean isAccountNonLocked() {
+			return true;
+		}
+
+		@Override
+		public boolean isCredentialsNonExpired() {
+			return true;
+		}
+
+		@Override
+		public boolean isEnabled() {
+			return true;
+		}
+
+	}
+
+Then configure `AuthenticationManager` with custom `UserDetailsService` instead of `inMemoryAuthentication`.	
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth)
+			throws Exception {
+		auth.userDetailsService(new SimpleUserDetailsServiceImpl(userRepository))
+			.passwordEncoder(passwordEncoder);
+	}
 	
 If you want to design a customized Authentication strategy, you could have to create a custom `AuthenticationEntryPoint` and `AuthenticationProvider` for it. We will discuss this later.
 
