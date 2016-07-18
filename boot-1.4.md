@@ -171,7 +171,7 @@ For example, custom `JsonSerializer` and `JsonDeserializer` are use for serializ
 
 If you are using the Spring Boot default Jackson configuration, it will be activated by default when the application starts up.
 
-But f you customized a `ObjectMapper` bean in your configuration, the autoconfiguration of `ObjectMapper` is disabled. You have to install `JsonComponentModule` manually, else the `@JsonComponent` annotated bean will not be discovered at all.
+But if you customized a `ObjectMapper` bean in your configuration, the autoconfiguration of `ObjectMapper` is disabled. You have to install `JsonComponentModule` manually, else the `@JsonComponent` beans will not be scanned at all.
 
     @Bean
     public Jackson2ObjectMapperBuilder objectMapperBuilder(JsonComponentModule jsonComponentModule) {
@@ -185,7 +185,7 @@ But f you customized a `ObjectMapper` bean in your configuration, the autoconfig
 
 ###Mocking and spying Beans
 
-Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockBean` and `MockSpy` annotations.
+Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockBean` and `@MockSpy` annotations.
 	
 	@RunWith(SpringRunner.class)
 	public class MockBeanTest {

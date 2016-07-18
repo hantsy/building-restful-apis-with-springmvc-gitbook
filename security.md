@@ -1,39 +1,19 @@
 #Secures APIs
 
-We have configured Spring Secuirty in before posts. 
+We have configured Spring Security in before posts. 
 
-In this post, I will show you using Spring Secuirty to protect APIs, aka provides Anthentication and Anthorization service for this sample application.
+In this post, I will show you using Spring Security to protect APIs, aka provides Anthentication and Anthorization service for this sample application.
 
 * **Authentication** answers the question: if the user is a valid user.
-* **Authorization** resolves the problem: if the authenticated user has corresponding permission to do something.
+* **Authorization** resolves the problem: if the authenticated user has corresponding permissions to access resources.
 
-In Spring security, it is easy to configure JAAS compatible strategy, such as FORM, BASIC, X509 Certiciate etc. Unlike JAAS in which authentication management is very dependent on the container itself, Spring Security provides simple APIs(such as `UserDetails`, `UserDetailsService`, `Authority`) allow developers to implement them outside of a container, and control the authentication and authorization in a progammatic approach. 
+##Authentication
+
+In Spring security, it is easy to configure JAAS compatible authentication strategy, such as FORM, BASIC, X509 Certiciate etc. 
+
+Unlike JAAS in which the authentication management is very dependent on the container itself. Spring Security provides some extension points(such as `UserDetails`, `UserDetailsService`, `Authority`) and allows developers to customize and implement the authentication and authorization in a progammatic approach. 
 
 Motioned in before posts, the simplest way to configure Spring security is using `AuthenticationManagerBuilder` to build essential required resources. 
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http   
-			.authorizeRequests()   
-			.antMatchers("/api/ping")
-			.permitAll()
-		.and()
-			.authorizeRequests()   
-			.antMatchers("/api/**")
-			.authenticated()
-		.and()
-			.authorizeRequests()   
-			.anyRequest()
-			.permitAll()
-			.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-				.httpBasic()
-			.and()
-				.csrf()
-				.disable();
-	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth)
@@ -47,7 +27,7 @@ Motioned in before posts, the simplest way to configure Spring security is using
 	
 An in-memory database and a HTTP BASIC authentication is easy to prototype applications, as showing as above codes. 
 
-If you want to store users into your database, firstly create a custom `UserDetailsService` and implement the `findByUsername` method and return a `UserDetails` object.
+If you want to store users into your database, firstly create a custom `UserDetailsService` bean and implement the `findByUsername` method and return a `UserDetails` object.
 
 	public class SimpleUserDetailsServiceImpl implements UserDetailsService {
 
@@ -74,12 +54,16 @@ If you want to store users into your database, firstly create a custom `UserDeta
 
 	}
 
-Then replace above `inMemoryAuthentication` configuration with `UserDetailsService`.	
+Then replace above `inMemoryAuthentication` configuration with your `UserDetailsService`.	
 
 	auth.userDetailsService(new SimpleUserDetailsServiceImpl(userRepository))
 		.passwordEncoder(passwordEncoder);
 	
 If you want to design a customized Authentication strategy, you could have to create a custom `AuthenticationEntryPoint` and `AuthenticationProvider` for it. We will discuss this later.
+
+##Anthorization
+
+Once user is authenticated, when he tries to access some resources, such as URL, or execute some methods, it should check if the resource is protected, or has granted permissions on executing the methods.
 
 ### Declarative URL pattern based authorizations
 
@@ -147,7 +131,7 @@ And only the post owner can update the post.
 	
 ### Programmatic authorizations
 
-Spring provides APIs to fetech current principal info. 
+Spring provides APIs to fetch current principal info. 
 
 For example, get current Authetication from SecurityContextHolder.
 
