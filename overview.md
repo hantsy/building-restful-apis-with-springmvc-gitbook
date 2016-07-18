@@ -96,3 +96,10 @@ A Spring Boot based envolved version provides more featuers to demonstrate the c
 
 Please read the README.md file in these respositories and run them under your local system.
 
+##Feedback
+
+The source of this book are hosted on my github.com account.
+
+[https://github.com/hantsy/angularjs-springmvc-sample-gitbook](https://github.com/hantsy/angularjs-springmvc-sample-gitbook)
+
+Feel free to provide feedback on this project.
