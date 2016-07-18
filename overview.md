@@ -63,7 +63,7 @@ In these posts, it will not cover all Spring and Java EE features, but the follo
 
 In order to demonstrate how to build RESTful APIs, I will implement a simple Blog system to explain it in details.
 
-Imagine there are two roles will use this blog.
+Imagine there are two roles will use this blog system.
 
 * ROLE_ADMIN, the administrative user.
 * ROLE_USER, the normal user.
@@ -73,7 +73,7 @@ A normal user can execute the most common tasks.
 1. Create a new post.
 2. Update post.
 3. View post detail.
-4. Query posts by keyword.
+4. Search posts by keyword.
 5. Delete posts.
 6. Comment on posts.
 
@@ -82,7 +82,7 @@ A administrater should have more advanced permissions, eg. he can manage the sys
 1. Create a new user.
 2. Update uesr
 3. Delete user
-4. Query users by keyword.
+4. Search users by keyword.
 
 ##Sample codes
 

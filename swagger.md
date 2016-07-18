@@ -1,6 +1,6 @@
 #Visualizes REST APIs with Swagger
 
-Swagger is wildly used for visualizing APIs and provdies online sandbox for frontend developers.
+Swagger is widely used for visualizing APIs, and with Swagger UI it provides online sandbox for frontend developers.
 
 ## Visualizes REST APIs with Swagger
 
@@ -27,8 +27,6 @@ Swagger is wildly used for visualizing APIs and provdies online sandbox for fron
 
 		@Configuration
 		@EnableSwagger2
-		// Loads the spring beans required by the framework
-		@Profile(value = {"dev", "staging"})
 		public class SwaggerConfig {
 
 			@Bean
@@ -66,27 +64,29 @@ Swagger is wildly used for visualizing APIs and provdies online sandbox for fron
 
 3. View REST APIs in swagger ui.
 
-	Starts up applications.
+	Starts up this application via command line.
 	
 		mvn tomcat7:run //or mvn spring-boot:run
 		
 	Open browser and navigate [http://localhost:8080/angularjs-springmvc-sample/swagger-ui.html](http://localhost:8080/angularjs-springmvc-sample/swagger-ui.html).	
 	
-	You will see screen like the following.
+	You will see the screen like the following.
 	
 	![Swagger-ui](swagger-ui.png)
 	
 ## Documents REST APIs in static docs
 
-In the above steps, the Swagger Schema definition is generated at runtime, you can get the content via link:[http://localhost:8080/angularjs-springmvc-sample/v2/api-docs?group=public-api](http://localhost:8080/angularjs-springmvc-sample/v2/api-docs?group=public-api). You will see the complete Swagger schema definition.
+In the above steps, the Swagger schema definition is generated at runtime, you can get the content via link:[http://localhost:8080/angularjs-springmvc-sample/v2/api-docs?group=public-api](http://localhost:8080/angularjs-springmvc-sample/v2/api-docs?group=public-api). You will see the complete Swagger schema definition.
 
 ![swagger schema](swagger-schema.png)
 
 You can save this page content as a json file and upload to [http://editor.swagger.io](http://editor.swagger.io) and edit it online.
 
-The Swagger schema definition generation will consume lots of resourcs at runtime. But, with the help of Springfox and [Swagger2Markup project](https://github.com/Swagger2Markup/swagger2marku), the schema definition can generated as a file, and converted to asciidocs, and with `asciidoctor-maven-plugin`, the asciidocs can be generated into static HTML5 or PDF files.
+The Swagger schema definition generation will consume lots of system resourcs at runtime. 
 
-1. Add `swagger2-markup` and `asciidoctor` maven plugins into `pom.xml` file.
+Combined with Springfox, [Swagger2Markup project](https://github.com/Swagger2Markup/swagger2marku), and [Spring RestDocs](http://projects.spring.io/spring-restdocs/), the Swagger schema definition can be converted to asciidocs, and with `asciidoctor-maven-plugin`, the asciidocs can be generated into static HTML5 or PDF files.
+
+1. Add `swagger2-markup-maven-plugin` into *pom.xml* file. 
 
 		<!-- First, use the swagger2markup plugin to generate asciidoc -->
 		<plugin>
@@ -130,7 +130,11 @@ The Swagger schema definition generation will consume lots of resourcs at runtim
 				</execution>
 			</executions>
 		</plugin>
+		
+	The `convertSwagger2markup` goal will convert Swagger schema definition into asciidocs.	
 
+2. Add `asciidoctor-maven-plugin` into `pom.xml` file.
+		
 		<!-- Run the generated asciidoc through Asciidoctor to generate
 		other documentation types, such as PDFs or HTML5 -->
 		<plugin>
@@ -195,15 +199,12 @@ The Swagger schema definition generation will consume lots of resourcs at runtim
 				</execution>              
 			</executions>
 		</plugin>	
-	
-	
-	The `convertSwagger2markup` goal will convert Swagger schema definition into asciidocs.
-	
+		
 	`asciidoctor-maven-plugin` will generate the asciidocs into HTML5 and PDF files.
 
-2. Add `spring-restdocs` support.
+3. Add `spring-restdocs` support.
 
-	`spring-restdocs` will generate the code snippets for test, which can be combined into the final docs and show as RESR APIs exmaple.
+	`spring-restdocs` will generate the sample code snippets from test, which can be combined into the final docs.
 	
 	Add related dependencies into `pom.xml` file.
 	
@@ -357,7 +358,7 @@ The Swagger schema definition generation will consume lots of resourcs at runtim
 
 		}
 
-3. Run `mvn clean verify` to execute all tests and generate HTML5 and PDF file for the REST APIs.
+4. Run `mvn clean verify` to execute all tests and generate HTML5 and PDF file for the REST APIs.
 
 	Open *\target\asciidoc\html\index.html* in browser, it looks like.
 	
@@ -366,3 +367,7 @@ The Swagger schema definition generation will consume lots of resourcs at runtim
 	Open *\target\asciidoc\pdf\index.pdf* in Pdf viewer, it looks like.
 	
 	![pdf](apidocs-pdf.png)
+	
+
+
+
