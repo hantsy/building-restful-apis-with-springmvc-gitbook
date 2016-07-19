@@ -240,30 +240,30 @@ Let's us create a Maven based Java EE 7 web application to introduce how to conf
 	
 5. Configuration classes.
 
-   Therea are a few configuration classes already created for this sample application, as you saw in above `AppInitializer`.
+    Therea are a few configuration classes already created for this sample application, as you saw in above `AppInitializer`.
    
-   Every configuration should be annotated with `@Configuration`.
+    Every configuration should be annotated with `@Configuration`.
    
-   It is recommended to slipt the configurations into different classes by categories. eg. In this sample the configuration classes includes:
+    It is recommended to slipt the configurations into different classes by categories. eg. In this sample the configuration classes includes:
    
-   * `AppConfig` is the base configuration.
-   * `DataSourceConfig` is the configuration for `DataSource`.
-   * `JpaConfig` is the configuration for JPA and transacation.
-   * `DataJpaConfig` is the configuration for Spring Data JPA extension support.
-   * `SecurityConfig` is the Spring Security configuration.
-   * `Jackson2ObjectMapperConfig` is the customized Jackson `ObjectMapper` bean.
-   * `MessageSourceConfig` is the configuration for `MessageSource`.
-   * `WebConfig` is the configuration for Spring MVC.
-   * `SwaggerConfig` is the configuration for Swagger schema APIs.
+    * `AppConfig` is the base configuration.
+    * `DataSourceConfig` is the configuration for `DataSource`.
+    * `JpaConfig` is the configuration for JPA and transacation.
+    * `DataJpaConfig` is the configuration for Spring Data JPA extension support.
+    * `SecurityConfig` is the Spring Security configuration.
+    * `Jackson2ObjectMapperConfig` is the customized Jackson `ObjectMapper` bean.
+    * `MessageSourceConfig` is the configuration for `MessageSource`.
+    * `WebConfig` is the configuration for Spring MVC.
+    * `SwaggerConfig` is the configuration for Swagger schema APIs.
    
 
-   `@ComponentScan` defines the component scanning strategy for loading Spring `Component` at the application starts up. 
+    `@ComponentScan` defines the component scanning strategy for loading Spring `Component` at the application starts up. 
    
-   The **excludeFilters** property define rules to exclude some components. `AppConfig` only scans none web beans, and `WebConfig` only scan web relates beans.
+    The **excludeFilters** property define rules to exclude some components. `AppConfig` only scans none web beans, and `WebConfig` only scan web relates beans.
    
-   **@PropertySource** configures the properties file will be loadded by Spring, later you can read the properties by `Environment`. Check the usage in `DataSourceConfig` class.
+    **@PropertySource** configures the properties file will be loadded by Spring, later you can read the properties by `Environment`. Check the usage in `DataSourceConfig` class.
    
-   Have a look at the content of `WebConfig` which is responsible for configuring Spring MVC in details, including resource handling, view, view resolvers etc.
+    Have a look at the content of `WebConfig` which is responsible for configuring Spring MVC in details, including resource handling, view, view resolvers etc.
    
 	   public class WebConfig extends SpringDataWebConfiguration {
 	   
@@ -344,15 +344,17 @@ Let's us create a Maven based Java EE 7 web application to introduce how to conf
 
 Open https://start.spring.io, search *Web*, *Secrity*, *JPA*, *Validation* in the **Dependencies** input box, select the items in the dropdown menus.
 
-![start.png](https://github.com/hantsy/angularjs-springmvc-sample-gitbook/blob/master/start.png)
+![start.png](start.png)
 
 Then press ALT+Enter or click **Generate** button to download the generated codes in zip archive.
 
 Extract the files into your local system.
 
-It only includes a few files:
+As a start point, it only includes a few files.
 
-* Maven project configuration *pom.xml*, and maven wrapper files.
+![start-file.png](start-file.png)
+
+* The Maven project configuration *pom.xml*, and several maven wrapper files which is like Gradle wrapper and use to download a specific maven for this project.
 * A Spring Boot specific `Application` class as the application entry.
 * A dummy test for the `Application` class.
 
@@ -509,7 +511,9 @@ Under **spring** defines *DataSource*, *JPA*, *Spring Data JPA* etc.
 
 **NOTE**: Spring Boot also supports *properties*, groovy format for application configuration.
 
-The following configuration extends application.yml.
+In the [sample codes](https://github.com/hantsy/angularjs-springmvc-sample-boot), there are some custom configuration classes.
+
+The following configuration extends the JPA config in application.yml.
 
 	@Configuration
 	@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)

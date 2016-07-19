@@ -213,7 +213,7 @@ And only the post owner can update the post.
  	
 **securedEnabled** enables the legacy `@Secured` annotation which does not accept Spring EL as property value.
 
-	@Secured("ROLE_TELLER")	
+	@Secured("ROLE_USER")	
 	public void savePost(Post post){}
 	
 ### Programmatic authorizations
