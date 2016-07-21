@@ -2,7 +2,7 @@
 
 As stated in before posts, we are going to build a Blog system.
 
-To demonstrate REST API, we use a simple `Post` entity to persist blog entries, and expose the CRUD operations via REST APIs to client applications. In the real world, the client applications can be a website, a desktop application, or a mobile application.
+To demonstrate REST API, we use a simple `Post` entity to persist blog entries, and expose the CRUD operations via REST APIs to client applications. As a REST API consumer, the client applications could be a website, a desktop application, or a mobile application.
 
 Following the REST API convention and HTTP protocol specification, the post APIs can be designed as the following table.
 
@@ -16,9 +16,17 @@ Following the REST API convention and HTTP protocol specification, the post APIs
 
 Next, we begin to create the domain models: `Post`.
 
-## Models
+## Modeling the Blog application
 
-Create a JPA Entity class, named `Post`.
+As planned in [Overview](overview.md), there are some domain objects should be created.
+
+A `Post` model to store the blog entries posted by users.
+A `Comment` model to store the comments on a certain post.
+A `User` model to store users will user this blog application.
+
+Every domain object should be identified, JPA entity satisfy the requirement, an Entity has an `@Id` field as identifier. 
+
+A simple `Post` entity can desianted as.
 
 	@Entity
 	@Table(name = "posts")
@@ -47,9 +55,60 @@ Create a JPA Entity class, named `Post`.
 		//getters and setters, hashcode, equals, toString etc. are omitted
 	}
 	
-It is a standard JPA entity. An entity class must be annotated with `@Entity`, and implements `Serializable` interface, and includes an identifier field(annotated with `@Id`), and a default none arguemtns constructor.	
+It is a standard JPA entity. 
 
-If you are using Lombok, the getters, setters, equals, hashCode, toString and class constructor can generated at compile runtime.
+* An entity class must be annotated with `@Entity`
+* An entity should implement `Serializable` interface
+* An entity must include an identifier field(annotated with `@Id`), such as `id` of `Post`.
+* An entity should have a default none-arguments constructor. By default, if there is no explict constructor declaration, there is an implict none-argument constructor. If there is a constructor accepts more than one arguments, you have to add another none-argument explictly.
+
+	For example.
+	
+		public Post(String title, String content){}
+		public Post(){}//must add this constructor explictly
+
+Optionally, it is recommended to implement your own `equals` and `hashCode` methods for every entities, if there is a requirement to identify them in collection container.
+
+For example, there are a post existed in collection, adding another `Post` into collection should check the post existance.
+
+	publc class PostCollection{
+		private List<Post> posts=new ArrayList<>();
+		
+		public void addPost(Post p){
+			if(!this.posts.contains(p)){
+				this.posts.add(p);
+			}
+		}
+	}
+	
+The title property can be used to identify the two posts in collection container, because they are not presisted in a persistent storage at the moment, `@Id` should be null.
+
+Implements `equals` and `hashCode` with title property of `Post`.
+
+	public boolean equals(Object u){ 
+		// omitted null check
+		return this.title=(Post)u.getTitle();
+	}
+	
+	public int hashCode(){
+		return 17* title.hashCode();
+	}
+
+When an entity instance is being persisted into a database table, the id will be filled. 
+
+In JPA, there is a sort of standard id generation strategies available.
+
+By default, it is `AUTO`, which uses the database built-in id generation approache to assign an primary key to the inserted record. 
+
+**WARNING**: Every databases has its specific generation strategy, if you are building an application which will run across databases. `AUTO` is recommended.
+
+Other id generation strategies include *TABLE*, *IDENTITY*. And JPA providers have their extensions, such as Hibernate, you can use *uuid2* for PostgresSQL. 	
+
+###Lombok
+	
+[Lombok](http://projectlombok.org) is a greate helper every Java developer should use in projects. Utilize Java annotation processor, it can generate getters, setters, equals, hashCode, toString and class constructor at compile runtime with some Lombok annotations.
+
+Add `@Data` to `Post` class, you can remove all getters and setters, and `equals`, `hashcode`, `toString` methods. The code now looks more clean.
 
 	@Data
 	@Builder
@@ -57,12 +116,32 @@ If you are using Lombok, the getters, setters, equals, hashCode, toString and cl
 	@AllArgsConstructor
 	@Entity
 	@Table(name = "posts")
-	public class Post implements Serializable {}
+	public class Post implements Serializable {		
+		@Id()
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "id")
+		private Long id;
+
+		@Column(name = "title")
+		private String title;
+
+		@Column(name = "content")
+		@Size(max = 2000)
+		private String content;
+
+		@Column(name = "status")
+		@Enumerated(value = EnumType.STRING)
+		private Status status = Status.DRAFT;
+
+		@Column(name = "created_date")
+		@Temporal(TemporalType.TIMESTAMP)
+		private Date createdDate;
+	}
 
 There are some annotations provided in Lombok to archive this purpose.
 
-`@Data` is a composite annotation which includes @Getter, @Setter etc.
-`@Builder` will generate a Builder class for the hosted POJO, give user a fluent API to build an object.
+`@Data` is a composite annotation which includes @Getter, @Setter, @EqualsAndHashCode,@ToString etc.
+`@Builder` will generate an inner Builder class in the hosted class which provides a fluent API to build an object.
 
 Add lombok dependency in *pom.xml*.
 
@@ -90,7 +169,7 @@ For example.
 		</configuration>
 	</plugin>
 
-**NOTE**: If you are using Eclipse based IDE, such as Spring Tool Suite, or Intellij IDEA, you could need to install the Lombok plugin, check the [Lombok download page](https://projectlombok.org/download.html) for installation information.
+**NOTE**: If you are using Eclipse based IDE, such as Spring Tool Suite, or Intellij IDEA, you could have to install the Lombok plugin manually, check the [Lombok download page](https://projectlombok.org/download.html) for installation information. Luckily, NetBeans IDE can recognise the Lombok facilities automatcially.
 
 Unlike JPA metadata generator which generates metedata source for JPA entities. Lombok modifies target classes directly.
 
@@ -125,7 +204,7 @@ Execute `javap Post.class` in command line, you can get the follwing info.
 	  public com.hantsylabs.restexample.springmvc.domain.Post(java.lang.Long, java.lang.String, java.lang.String, com.hantsylabs.restexample.springmvc.domain.Post$Status, com.hantsylabs.restexample.springmvc.domain.User, java.time.LocalDateTime, com.hantsylabs.restexample.springmvc.domain.User, java.time.LocalDateTime);
 	} 
 
-It includes all signatures of the members in *Post.class*. As you see the enssetial methods have been added into the *Post.class*, and there is a *Post$Builder.class* file exists in the same folder, which is an internal class in the Post and implements the *Builder* pattern.
+It prints all signatures of members of *Post.class*. As you see all essential methods(getters, setters, equals, hashCode, toString) have been added into the *Post.class*, and there is a *Post$Builder.class* file existed in the same folder, which is an inner class in the Post and implements the *Builder* pattern.
 
 You can create a `Post` object using Post builder like this.
 
@@ -134,7 +213,7 @@ You can create a `Post` object using Post builder like this.
                 .content("content of my first post")
                 .build();
 
-Compare to following legacy approache, the Builder pattern is more friendly to developers, and the code is more readable.
+Compare to following legacy new an object, the Builder pattern is more friendly to developers, and codes become more readable.
 
 	Post post = new Post();
 	post.setTitle("title of my first post");
