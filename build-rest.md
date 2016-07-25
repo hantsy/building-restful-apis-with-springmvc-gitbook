@@ -439,8 +439,6 @@ The Spring profile can be activiated by an environment varible: `spring.profiles
             </build>
         </profile>
 		
-		
-
 3. After it is compiled, content of `app.properties` is filtered and replaced with the defined property.
 
 		#app config properties

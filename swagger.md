@@ -2,7 +2,7 @@
 
 Swagger is widely used for visualizing APIs, and with Swagger UI it provides online sandbox for frontend developers.
 
-## Visualizes REST APIs with Swagger
+## Visualizes REST APIs
 
 [SpringFox project](http://springfox.github.io/springfox/) provides Swagger support for Spring based REST APIs.
 
@@ -74,7 +74,7 @@ Swagger is widely used for visualizing APIs, and with Swagger UI it provides onl
 	
 	![Swagger-ui](swagger-ui.png)
 	
-## Documents REST APIs in static docs
+## Documents REST APIs
 
 In the above steps, the Swagger schema definition is generated at runtime, you can get the content via link:[http://localhost:8080/angularjs-springmvc-sample/v2/api-docs?group=public-api](http://localhost:8080/angularjs-springmvc-sample/v2/api-docs?group=public-api). You will see the complete Swagger schema definition.
 
@@ -369,5 +369,15 @@ Combined with Springfox, [Swagger2Markup project](https://github.com/Swagger2Mar
 	![pdf](apidocs-pdf.png)
 	
 
+##Source Code
 
+Check out sample codes from my github account.
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample
+	
+Or the Spring Boot version:
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
+	
+Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
 

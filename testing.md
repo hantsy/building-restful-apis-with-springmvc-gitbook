@@ -22,7 +22,7 @@ Spring provides a test context environment for developers, it supports JUnit and
 
 In this sample applcation, I will use JUnit as test runner, also use [Mockito](http://mockito.org) to test service in isolation, and use [Rest Assured](http://rest-assured.io/) BDD like fluent APIs to test REST from client view.
 
-##A simple JUnit test
+##A simple POJO test
 
 A classic JUnit test looks like this.
 
@@ -94,7 +94,7 @@ You could see the following output summary for this test.
 
 Mockito provides the simplest approaches to mock the dependencies, and setup the assumption, and provides an isolation environment to test `BlogService`.
 
-### Test BlogService in isolation
+### use Mockito to isolate dependencies
 
 Mocks `PostRepository`, when invoke methods of `PostRepository`, return the dummy data we assumed. Mockito gives us a simple way to complete the assumption progress.
 
@@ -210,7 +210,7 @@ You will see the test result like.
 	Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 
 	
-### Test BlogService in integration environment
+### Integration test 
 
 We have known `BlogService` works when we mocked the dependencies. 
 
@@ -307,7 +307,7 @@ The test result should be shown as below.
 
 Spring provides a sort of mock APIs to emulate a Servlet container environment, thus it is possbile to test MVC related feature without a real container.
 
-###Use MockMvc with mock service
+###Use MockMvc with mocked service
 
 MockMvc does not need a Servlet container, but can test most of the Controller features.
 
@@ -911,4 +911,16 @@ This test is also run as client, and interacts with backend via REST API.
 The above Rest Assured sample codes are available in the [Spring Boot version](https://github.com/hantsy/angularjs-springmvc-sample-boot), check out the codes and experience yourself.
 
 It also includes a simple JBehave sample, if you are a JBehave user, you maybe interested in it.
+
+##Source Code
+
+Check out sample codes from my github account.
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample
+	
+Or the Spring Boot version:
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
+	
+Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
 	
