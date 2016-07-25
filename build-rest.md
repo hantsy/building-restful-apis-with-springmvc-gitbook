@@ -16,17 +16,17 @@ Following the REST API convention and HTTP protocol specification, the post APIs
 
 Next, we begin to create the domain models: `Post`.
 
-## Modeling the Blog application
+## Modeling the blog application
 
-As planned in [Overview](overview.md), there are some domain objects should be created.
+As planned in [Overview](overview.md), there are some domain objects should be created for this blog sample application.
 
 A `Post` model to store the blog entries posted by users.
 A `Comment` model to store the comments on a certain post.
 A `User` model to store users will user this blog application.
 
-Every domain object should be identified, JPA entity satisfy the requirement, an Entity has an `@Id` field as identifier. 
+Every domain object should be identified. JPA entities satisfy this requirement. Every JPA entity has an `@Id` field as identifier. 
 
-A simple `Post` entity can desianted as.
+A simple `Post` entity can be designated as the following. Besides id, it includes a `title` field , a `content` field, and `createdDate` timestamp, etc.
 
 	@Entity
 	@Table(name = "posts")
@@ -43,10 +43,6 @@ A simple `Post` entity can desianted as.
 		@Column(name = "content")
 		@Size(max = 2000)
 		private String content;
-
-		@Column(name = "status")
-		@Enumerated(value = EnumType.STRING)
-		private Status status = Status.DRAFT;
 
 		@Column(name = "created_date")
 		@Temporal(TemporalType.TIMESTAMP)
@@ -67,9 +63,9 @@ It is a standard JPA entity.
 		public Post(String title, String content){}
 		public Post(){}//must add this constructor explictly
 
-Optionally, it is recommended to implement your own `equals` and `hashCode` methods for every entities, if there is a requirement to identify them in collection container.
+Optionally, it is recommended to implement your own `equals` and `hashCode` methods for every entities, if there is a requirement to identify them in a collection.
 
-For example, there are a post existed in collection, adding another `Post` into collection should check the post existance.
+For example, there are a post existed in a collection, adding another `Post` into the same collection should check the post existance firstly.
 
 	publc class PostCollection{
 		private List<Post> posts=new ArrayList<>();
@@ -81,9 +77,9 @@ For example, there are a post existed in collection, adding another `Post` into 
 		}
 	}
 	
-The title property can be used to identify the two posts in collection container, because they are not presisted in a persistent storage at the moment, `@Id` should be null.
+The title field can be used to identify two posts in a collection, because they are not presisted in a persistent storage at the moment, `id` value are same--null.
 
-Implements `equals` and `hashCode` with title property of `Post`.
+Implements `equals` and `hashCode` with title field of `Post`.
 
 	public boolean equals(Object u){ 
 		// omitted null check
@@ -96,13 +92,13 @@ Implements `equals` and `hashCode` with title property of `Post`.
 
 When an entity instance is being persisted into a database table, the id will be filled. 
 
-In JPA, there is a sort of standard id generation strategies available.
+In JPA specification, there is a sort of standard id generation strategies available.
 
 By default, it is `AUTO`, which uses the database built-in id generation approache to assign an primary key to the inserted record. 
 
 **WARNING**: Every databases has its specific generation strategy, if you are building an application which will run across databases. `AUTO` is recommended.
 
-Other id generation strategies include *TABLE*, *IDENTITY*. And JPA providers have their extensions, such as Hibernate, you can use *uuid2* for PostgresSQL. 	
+Other id generation strategies include *TABLE*, *IDENTITY*. And JPA providers have their extensions, such as with Hibernate, you can use *uuid2* for PostgresSQL. 	
 
 ###Lombok
 	
@@ -218,14 +214,402 @@ Compare to following legacy new an object, the Builder pattern is more friendly 
 	Post post = new Post();
 	post.setTitle("title of my first post");
 	post.setContent("content of my first post");
+	
+###Model associations
 
-## Repository
+Let's create other related models, `Comment` and `User`.
 
-A repository is a domain object collection, allow clients retreive data from repository and saving resource state into repository. 
+`Comment` class is associated with `Post` and `User`. Every comment should be belong to a post, and has an author(`User`).
 
-JPA standardised Hibernate 3.x and it is part of Java EE specification since Java EE 5. Currently there are some popular JPA providers, such as Hibernate, OpenJPA, EclipseLink etc. EclipseLink is shipped wtih Glassfish, and Hibernate is included JBoss Wildfly/Redhat EAP.
+	@Getter
+	@Setter
+	@ToString
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Entity
+	@Table(name = "comments")
+	public class Comment implements Serializable {
 
-Spring Data JPA simplifies JPA in Spring, please check [an early post I wrote to discuss this topic](http://hantsy.blogspot.com/2013/10/spring-data-jpa.html).
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Id()
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "id")
+		private Long id;
+
+		@Column(name = "content")
+		private String content;
+
+		@JoinColumn(name = "post_id")
+		@ManyToOne()
+		private Post post;
+
+		@ManyToOne
+		@JoinColumn(name = "created_by")
+		@CreatedBy
+		private User createdBy;
+
+		@Column(name = "created_on")
+		@CreatedDate
+		private LocalDateTime createdDate;
+
+		@Override
+		public int hashCode() {
+			int hash = 5;
+			hash = 89 * hash + Objects.hashCode(this.content);
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final Comment other = (Comment) obj;
+			if (!Objects.equals(this.content, other.content)) {
+				return false;
+			}
+			return true;
+		}
+	}
+
+`User` class contains fields of a user account, including username and password which used for authentication.
+	
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Entity
+	@Table(name = "users")
+	public class User implements Serializable {
+
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Id()
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		@Column(name = "id")
+		private Long id;
+
+		@Column(name = "username")
+		private String username;
+
+		@Column(name = "password")
+		private String password;
+
+		@Column(name = "name")
+		private String name;
+
+		@Column(name = "email")
+		private String email;
+
+		@Column(name = "role")
+		private String role;
+
+		@Column(name = "created_date")
+		@CreatedDate
+		private LocalDateTime createdDate;
+
+		public String getName() {
+			if (this.name == null || this.name.trim().length() == 0) {
+				return this.username;
+			}
+			return name;
+		}	
+	}	
+	
+A `Post` should have an author.
+
+	public class Post{
+	
+	    @ManyToOne
+		@JoinColumn(name = "created_by")
+		@CreatedBy
+		User createdBy;
+	}
+
+##Data persistence with JPA	
+
+Generally, in Spring application, in order to make JPA work, you have to configure a `DataSource`, `EntityManagerFactory`, `TransactionManager`.
+
+###JPA overview
+
+JPA standardised Hibernate and it is part of Java EE specification since Java EE 5. Currently there are some popular JPA providers, such as Hibernate, OpenJPA, EclipseLink etc. EclipseLink is shipped wtih Glassfish, and Hibernate is included JBoss Wildfly/Redhat EAP.
+
+In the above Modeling section, we have created models, which are JPA entities. In this section, let's see how to make it work.
+
+####Configure DataSources
+
+Like other ORM frameworks, you have to configure a DataSource.
+
+The [DataSourceConfig](https://github.com/hantsy/angularjs-springmvc-sample/blob/master/src/main/java/com/hantsylabs/restexample/springmvc/config/DataSourceConfig.java) defines a series of DataSource for differnt profiles.
+
+	@Configuration
+	public class DataSourceConfig {
+
+		private static final String ENV_JDBC_PASSWORD = "jdbc.password";
+		private static final String ENV_JDBC_USERNAME = "jdbc.username";
+		private static final String ENV_JDBC_URL = "jdbc.url";
+
+		@Inject
+		private Environment env;
+
+		@Bean
+		@Profile("dev")
+		public DataSource dataSource() {
+			return new EmbeddedDatabaseBuilder()
+					.setType(EmbeddedDatabaseType.H2)
+					.build();
+		}
+
+		@Bean
+		@Profile("staging")
+		public DataSource testDataSource() {
+			BasicDataSource bds = new BasicDataSource();
+			bds.setDriverClassName("com.mysql.jdbc.Driver");
+			bds.setUrl(env.getProperty(ENV_JDBC_URL));
+			bds.setUsername(env.getProperty(ENV_JDBC_USERNAME));
+			bds.setPassword(env.getProperty(ENV_JDBC_PASSWORD));
+			return bds;
+		}
+
+		@Bean
+		@Profile("prod")
+		public DataSource prodDataSource() {
+			JndiObjectFactoryBean ds = new JndiObjectFactoryBean();
+			ds.setLookupOnStartup(true);
+			ds.setJndiName("jdbc/postDS");
+			ds.setCache(true);
+
+			return (DataSource) ds.getObject();
+		}
+
+	}
+
+In development stage("dev" profile is activated), using an embedded database is more easy to write tests, and speeds up development progress. In an integration server, it is recommended to run the appliation and integration tests on an environment close to production deployment. In a production environment,most of case, using a container managed datasource is effective.
+
+The Spring profile can be activiated by an environment varible: `spring.profiles.active`. In our case, I used maven to set `spring.profiles.active` at compile time.
+
+1. In the maven profile section, there is `spring.profiles.active` property defined. eg.
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+
+                <log4j.level>DEBUG</log4j.level>
+
+                <spring.profiles.active>dev</spring.profiles.active>
+                <!-- hibernate -->
+                <hibernate.hbm2ddl.auto>create</hibernate.hbm2ddl.auto>
+                <hibernate.show_sql>true</hibernate.show_sql>
+                <hibernate.format_sql>true</hibernate.format_sql>
+
+                <!-- mail config -->
+            </properties>
+			//...
+        </profile>
+
+2.  Then used maven resource filter to replaced the placeholder defined in `app.properties`. Every maven profile could have a specific folder to hold the profiled based files. eg.
+
+		<profile>
+            <id>dev</id>
+			//...
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources-dev</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+		
+		
+
+3. After it is compiled, content of `app.properties` is filtered and replaced with the defined property.
+
+		#app config properties
+		spring.profiles.active=@spring.profiles.active@
+		
+	Becomes:
+
+		#app config properties
+		spring.profiles.active=dev
+		
+4. In configuration class, add `PropertySource` to load the properties file.
+
+		@PropertySource("classpath:/app.properties")
+		@PropertySource(value = "classpath:/database.properties", ignoreResourceNotFound = true)
+		public class AppConfig {
+
+		}
+		
+NOTE: Read the Spring official document about [Spring profile and Environment](http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/beans.html#beans-definition-profiles).		
+		
+####Configure JPA and transaction
+
+Let's have a look at the [JpaConfig](https://github.com/hantsy/angularjs-springmvc-sample/blob/master/src/main/java/com/hantsylabs/restexample/springmvc/config/JpaConfig.java), it defines a `EntityManagerFactory` and `TransactionManager`.
+
+	@Configuration
+	@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
+	public class JpaConfig {
+
+		private static final Logger log = LoggerFactory.getLogger(JpaConfig.class);
+
+		private static final String ENV_HIBERNATE_DIALECT = "hibernate.dialect";
+		private static final String ENV_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+		private static final String ENV_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
+		private static final String ENV_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+
+		@Inject
+		private Environment env;
+
+		@Inject
+		private DataSource dataSource;
+
+		@Bean
+		public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+			LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+			emf.setDataSource(dataSource);
+			emf.setPackagesToScan("com.hantsylabs.restexample.springmvc");
+			emf.setPersistenceProvider(new HibernatePersistenceProvider());
+			emf.setJpaProperties(jpaProperties());
+			return emf;
+		}
+
+		private Properties jpaProperties() {
+			Properties extraProperties = new Properties();
+			extraProperties.put(ENV_HIBERNATE_FORMAT_SQL, env.getProperty(ENV_HIBERNATE_FORMAT_SQL));
+			extraProperties.put(ENV_HIBERNATE_SHOW_SQL, env.getProperty(ENV_HIBERNATE_SHOW_SQL));
+			extraProperties.put(ENV_HIBERNATE_HBM2DDL_AUTO, env.getProperty(ENV_HIBERNATE_HBM2DDL_AUTO));
+			if (log.isDebugEnabled()) {
+				log.debug(" hibernate.dialect @" + env.getProperty(ENV_HIBERNATE_DIALECT));
+			}
+			if (env.getProperty(ENV_HIBERNATE_DIALECT) != null) {
+				extraProperties.put(ENV_HIBERNATE_DIALECT, env.getProperty(ENV_HIBERNATE_DIALECT));
+			}
+			return extraProperties;
+		}
+
+		@Bean
+		public PlatformTransactionManager transactionManager() {
+			return new JpaTransactionManager(entityManagerFactory().getObject());
+		}
+	}	
+
+Generally, JPA is activiated by `META-INF/persistence.xml` file in container. 
+
+The following is a classic JPA persistence.xml. The transaction-type is `RESOUECE_LOCAL`, another available option is `JTA`. Most of the time, Spring runs in a Servlet container which does not support `JTA`. 
+
+	<persistence version="2.1"
+	   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="
+			http://xmlns.jcp.org/xml/ns/persistence
+			http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	   <persistence-unit name="primary" transaction-type="RESOUECE_LOCAL">
+
+		  <class>...Post</class>
+		  <none-jta-data-source/>
+		  <properties>
+			 <!-- Properties for Hibernate -->
+			 <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			 <property name="hibernate.show_sql" value="false" />
+		  </properties>
+	   </persistence-unit>
+	</persistence>
+
+You have to specify the entity classes to be loaded, and datasource here. Spring provides a `LocalEntityManagerFactoryBean` to simplifies configuration work, there is a `setPackagesToScan` method to specify the package will be scanned, and reuse the Spring DataSource configuration for datasource configuration.
+
+More simply, `LocalContainerEntityManagerFactoryBean` does not need persistence.xml any more and builds the JPA evironment from scratch. In above codes, we used `LocalContainerEntityManagerFactoryBean` simplifies JPA configuration.
+
+Now we are ready for using JPA.
+
+An example of JPA usage could like.
+
+	@Repository
+	@Transactional
+	public class PostRepository{
+	
+		@PersistenceContext
+		private EntityManager em;
+	}
+
+`@Repository` is an alias of `@Component`, `Transactional` is used to enable transaction on this bean. `@PersistenceContext` to inject an `EntityManager` to this bean. `EntityManager` provides a plent of methods to operate database.
+
+For example,
+
+`em.persist(Post)` to persist new entity.
+`em.merge(Post)` to merge the passed data into the entity existed and return a copy of the updated entity.
+
+If you want to explore all methods provided in EntityManager, check [EntityManager javadoc](http://docs.oracle.com/javaee/7/api/javax/persistence/EntityManager.html). 
+
+###Spring Data JPA
+
+Spring Data JPA simplifies JPA, please read [an early post I wrote to discuss this topic](http://hantsy.blogspot.com/2013/10/spring-data-jpa.html).
+
+Use a `EnableJpaRepositories` to activiate Spring Data JPA. `basePackages` specifies packages will be scanned by Spring Data.
+
+	@Configuration
+	@EnableJpaRepositories(basePackages = {"com.hantsylabs.restexample.springmvc"})
+	@EnableJpaAuditing(auditorAwareRef = "auditor")
+	public class JpaConfig {
+
+		@Bean
+		public AuditorAware<User> auditor() {
+			return () -> SecurityUtil.currentUser();
+		}
+
+	}
+	
+`EnableJpaAuditing` enable a simple auditing features provided in Spring Data JPA. There is some annotations are designated for it. Such as:
+
+* `@CreatedBy`
+* `@CreatedDate`
+* `@LastModifiedBy`
+* `@LastModifiedDate`
+
+When `AuditingEntityListener` is activated globally in */META-INF/orm.xml*. Any fields annotated with above annotaitions will be filled automatically when the hosted entity is created and updated.
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<entity-mappings 
+		xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd" version="2.1">
+		<persistence-unit-metadata>
+			<persistence-unit-defaults>
+				<entity-listeners>
+					<entity-listener class="org.springframework.data.jpa.domain.support.AuditingEntityListener" />
+				</entity-listeners>
+			</persistence-unit-defaults>
+		</persistence-unit-metadata>
+	</entity-mappings>
+
+`CreatedBy` and `LastModifiedBy` try to find a `AuditAware` bean and inject it into these fields at runtime. A simple implementation is getting the current principal from the Spring Security context.
+		
+### Repository
+
+You can imagine a repository as a domain object collection, allow you retreive data from it or save change state back. 
+
+[Spring Data Commons project](https://github.com/spring-projects/spring-data-commons) defines a series of interfaces for common data operations for different storages, including NoSQL and RDBMS.
+
+The top-level repository representation is the `Repository` interface.
+
+`CrudRepository` subclasses from `Repository` and includes extra creating, retrieving, updating and deleting operations, aka CRUD.
 
 A simple CRUD operations just need to create an interface extends `CrudRepository`.
 
@@ -266,13 +650,13 @@ For example, to search post by input keyword.
         }; 
     }
 	
-And you want to get a pageable result, you can use like this.
+And you want to get a pageable result, you can use like this, just add a `Pageable` argument.
 
 	Page<Post> posts = postRepository.findAll(PostSpecifications.filterByKeywordAndStatus(q, status), page);
 			
 `page` argument is a `Pageable` object which can transfer pagination parameters from client request, and return result is a typed `Page` object, it includes the items of the current page and page naviation meta, such as total items, etc.	
 
-## 	Service
+## Application Service
 
 A service can delegate CRUD operations to repository, also act as gateway to other bound context, such as messageing, sending email, fire events etc.
 
@@ -378,11 +762,61 @@ Validation annotations can be applied on it.
 
 Some exceptions are threw in the service if the input data can not satisfy the requirements. In the furthur post, I will focus on *exception handling* topic.
 
-## Controller
+There is a `DTOUtils` which is responsible for data copy from one class to another class. 
+
+	/**
+	 *
+	 * @author Hantsy Bai<hantsy@gmail.com>
+	 */
+	public final class DTOUtils {
+
+		private static final ModelMapper INSTANCE = new ModelMapper();
+		
+		private DTOUtils() {
+			throw new InstantiationError( "Must not instantiate this class" );
+		}
+
+		public static <S, T> T map(S source, Class<T> targetClass) {
+			return INSTANCE.map(source, targetClass);
+		}
+
+		public static <S, T> void mapTo(S source, T dist) {
+			INSTANCE.map(source, dist);
+		}
+
+		public static <S, T> List<T> mapList(List<S> source, Class<T> targetClass) {
+			List<T> list = new ArrayList<>();
+			for (int i = 0; i < source.size(); i++) {
+				T target = INSTANCE.map(source.get(i), targetClass);
+				list.add(target);
+			}
+
+			return list;
+		}
+
+		public static <S, T> Page<T> mapPage(Page<S> source, Class<T> targetClass) {
+			List<S> sourceList = source.getContent();
+
+			List<T> list = new ArrayList<>();
+			for (int i = 0; i < sourceList.size(); i++) {
+				T target = INSTANCE.map(sourceList.get(i), targetClass);
+				list.add(target);
+			}
+
+			return new PageImpl<>(list, new PageRequest(source.getNumber(), source.getSize(), source.getSort()),
+					source.getTotalElements());
+		}
+	}
+
+It used the effort of [ModelMapper project](http://modelmapper.org/).
+	
+## Produces REST APIs with Spring MVC
 
 Like other traditional action based framework, such as Apache Struts, etc, Spring MVC implements the standard MVC pattern. But against the benifit of IOC container, each parts of Spring MVC are not coupled, esp. view and view resolver are pluginable and can be configured. 
 
-For RESTful applications, JSON and XML are the commonly used exchange format, we do not need a template engine(such as Freemarker, Apache Velocity) for view, Spring can detect HTTP headers, such as *Content Type*, *Accept Type*, etc. to determine how to produce corresponding view result. Most of the time, we do not need to configure the view/view resolver explictly. This is called *Content negotiation*.
+For RESTful applications, JSON and XML are the commonly used exchange format, we do not need a template engine(such as Freemarker, Apache Velocity) for view, Spring MVC will detect HTTP headers, such as *Content Type*, *Accept Type*, etc. to determine how to produce corresponding view result. Most of the time, we do not need to configure the view/view resolver explictly. This is called *Content negotiation*. There is a `ContentNegotiationManager` bean which is responsible for *Content negotiation* and enabled by default in the latest version.
+
+The configuration details are motioned in before posts. We are jumping to write `@Controller` to produce REST APIs.
 
 Follows the REST design convention, create `PostController` to produce REST APIs.
 
@@ -478,12 +912,16 @@ Follows the REST design convention, create `PostController` to produce REST APIs
 		}
 
 	}
+	
+`@RestController` is a REST ready annotation, it is combined with `@Controller` and `@ResponseBody`.	
 
-*/api/posts* stand for a collection of `Post`, and */api/posts/{id}* is navigation to the specific Post which identified by id.
+`@RequestMapping` defines URL, HTTP methods etc are matched, the annotated method will handle the request. 
+
+*/api/posts* stands for a collection of `Post`, and */api/posts/{id}* is navigating to a specific Post which identified by id.
 
 A *POST* method on */api/posts* is use for creating a new post, return HTTP status 201, and set HTTP header *Location* value to the new created post url if the creation is completed successfully.
 
-*GET*, *PUT*, *DELETE* on */api/posts/{id}* performs retrieve, update, delete action on the certain post. *GET* will return a 200 HTTP status code, and *PUT*, *DELETE* return 204 if the operations are done expected. 
+*GET*, *PUT*, *DELETE* on */api/posts/{id}* performs retrieve, update, delete action on the certain post. *GET* will return a 200 HTTP status code, and *PUT*, *DELETE* return 204 if the operations are done as expected and there is no content body needs to be sent back to clients. 
 
 ## Run 
 
@@ -504,7 +942,7 @@ Execute this in the command line to start this application.
 
     mvn tomcat7:run
 
-**NOTE**: The tomcat maven plugin development is not active as expected, if you are using Servlet 3.1 features, you could have to use other plugin instead. 
+**NOTE**: The tomcat maven plugin development is not active, if you are using Servlet 3.1 features, you could have to use other plugin instead. 
 
 Jetty is the fastest embedded Servlet container and wildly used in development community. 
 
@@ -548,7 +986,7 @@ Another frequently used is Cargo which provides support for all popular applcati
 	
 Execute the following command to run the application on an embedded Tomcat 8 server with the help of Cargo.
 
-    mvn cargo:run	
+    mvn verify cargo:run	
 
 For Spring boot application, it is simple, just run the application like this.
 
