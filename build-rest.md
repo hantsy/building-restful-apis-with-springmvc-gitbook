@@ -994,6 +994,20 @@ For Spring boot application, it is simple, just run the application like this.
 
 By default, it uses Tomcat embedded server, but you can switch to Jetty and JBoss Undertow if you like. Check the Spring boot docs for details.
 
+##Source Code
+
+Check out sample codes from my github account.
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample
+	
+Or the Spring Boot version:
+
+	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
+	
+Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
+
+
+	
 
 
 	
