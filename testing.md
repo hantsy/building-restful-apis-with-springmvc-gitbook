@@ -24,7 +24,7 @@ In this sample applcation, I will use JUnit as test runner, also use [Mockito](h
 
 ##A simple POJO test
 
-A classic JUnit test looks like this.
+A classic JUnit test could look like this.
 
 	public class PostTest {
 
@@ -69,6 +69,8 @@ A classic JUnit test looks like this.
 `@Before` and `@After` will be executed around a test case.
 
 A test case is a method annotated with `@Test`.
+
+Another annotation we always used is `@RunWith`, such as `@RunWith(SpringJUnit4ClassRunner.class)`, which will prepare specific test context for Spring tests.
 	
 Run the test in command line.
 
@@ -94,7 +96,7 @@ You could see the following output summary for this test.
 
 Mockito provides the simplest approaches to mock the dependencies, and setup the assumption, and provides an isolation environment to test `BlogService`.
 
-### use Mockito to isolate dependencies
+### Isolate dependencies with Mockito
 
 Mocks `PostRepository`, when invoke methods of `PostRepository`, return the dummy data we assumed. Mockito gives us a simple way to complete the assumption progress.
 
@@ -146,6 +148,8 @@ Create a `MockDataConfig` configuration class in test package.
 			return post;
 		}
 	}
+	
+We create mocked `PostRepository` in this configuration. 
 
 Create `MockBlogServiceTest` for `BlogService`, used `MockDataConfig` to load configurations.
 

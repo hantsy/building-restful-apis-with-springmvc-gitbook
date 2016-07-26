@@ -43,21 +43,22 @@ In these posts, it will not cover all Spring and Java EE features, but the follo
 
 * JPA
 
-	Based on JDBC specification, JPA provides a high level ORM abstraction and brings OOP philosophy to interact with traditional RDBMS.
+	Based on JDBC specification, JPA provides a high level ORM abstraction and brings OOP philosophy to interact with traditional RDBMS. Hibernate and EclipseLink also support NoSQL.
 
 * Hibernate
 
-	In this sample application, Hibernate is used as a JPA provider. Most of time, we are trying to avoid to use a provider specific APIs, make the codes can be run in other containers.
+	In this sample application, Hibernate is used as the JPA provider. Most of time, we are trying to avoid to use a provider specific APIs, make the codes can be run cross JPA providers.
 
 * Spring Data JPA
 
-	Spring Data JPA simplifies using JPA in Spring, including a united `Repository` to perform simple CRUD without coding, simplfied type safe Criteria Query and QueryDSL integration, a simple auditing implementation, simple pagination of query result, Java 8 Optional and DateTime support etc.
+	Spring Data JPA simplifies using JPA in Spring, including a united `Repository` to perform simple CRUD without coding, simplfied type safe Criteria Query and QueryDSL integration, a simple auditing implementation, simple pagination support of query result, Java 8 Optional and DateTime support etc.
 
 	Check the Spring Data samples in [Spring4 sandbox](https://github.com/hantsy/spring4-sandbox).
 	 
-	We also used some third party utilities, such as [Lombok project](https://projectlombok.org/) to remove the tedious getters and setters of POJOs. 
+	
+We also used some third party utilities, such as [Lombok project](https://projectlombok.org/) to remove the tedious getters and setters of POJOs. 
 
-	For testing purpose, Spring test/JUnit, Mockito, Rest Assured will be used.
+For testing purpose, Spring test/JUnit, Mockito, Rest Assured will be used.
 
 ##Smaple application
 
