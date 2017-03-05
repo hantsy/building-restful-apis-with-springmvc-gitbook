@@ -1,4 +1,4 @@
-# Configure security 
+# Configure Spring Security 
 
 By default, Spring Boot will add BASIC authentication for your application. You can set the username and password in `application.yml` directly.
 

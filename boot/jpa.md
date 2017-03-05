@@ -1,6 +1,17 @@
 # Configure JPA
 
-We have already configured `DataSource`, and JPA and Data JPA via `application.yml`.
+Make sure the following dependencies are added in your `dependency` section of the project `pom.xml` file.
+
+```xml
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
+
+It will add managed JPA, Spring Data JPA and Hibernate into your project.
+
+We have already configured `DataSource`, and JPA and Spring Data JPA via `application.yml`.
 
 You can also use Java code configuration to add some extra features.
 
