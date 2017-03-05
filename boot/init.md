@@ -113,68 +113,7 @@ Till now, if you added some dependencies into `pom.xml`, you can start to code n
 
 Although Spring Boot provides auto-configuration feature, but it does not prevent you to customize your configuration.
 
-Create a *application.yml* in *src/main/resources* folder. It will override the default configuration. 
 
-```
-server:
-	port: 9000
-	contextPath: 
-
-spring: 
-	profiles:
-		active: dev
-	devtools.restart.exclude: static/**,public/**
-	datasource:
-		dataSourceClassName: org.h2.jdbcx.JdbcDataSource
-		url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-		databaseName: 
-		serverName: 
-		username: sa
-		password: 
-
-	jpa:
-		database-platform: org.hibernate.dialect.H2Dialect
-		database: H2
-		openInView: false
-		show_sql: true
-		generate-ddl: true
-		hibernate:
-			ddl-auto: 
-			naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
-		properties:
-			hibernate.cache.use_second_level_cache: true
-			hibernate.cache.use_query_cache: false
-			hibernate.generate_statistics: true
-			hibernate.cache.region.factory_class: org.hibernate.cache.internal.NoCachingRegionFactory
-
-	data:
-		jpa.repositories.enabled: true 
-		
-	freemarker:
-		check-template-location: false
-		
-	messages:
-		basename: messages
-
-logging:
-	file: app.log
-	level:
-		root: INFO
-		org.springframework.web: INFO
-		com.hantsylabs.restexample.springmvc: DEBUG
-```
-			
-This is a classic application configuration file in *YAML* format.    
-
-It is easy to understand.
-
-**server.port** specifies the port number this application will serve at start up.
-
-Under **spring** defines *DataSource*, *JPA*, *Spring Data JPA* etc.
-
-**logging** configures logging level for packages.
-
-**NOTE**: Spring Boot also supports *properties*, groovy format for application configuration.
 
 In the [sample codes](https://github.com/hantsy/angularjs-springmvc-sample-boot), there are some custom configuration classes.
 
@@ -243,6 +182,6 @@ public class SecurityConfig {
 	
 The `UserDetailsService` and passwordEncoder are also declared as Spring components, Spring Security 4.1 can recognise them.
 
-`SwaggerConfig` is no difference with before version.
+
 
 Get the [codes](https://github.com/hantsy/angularjs-springmvc-sample-boot) from my github account to view the details.
