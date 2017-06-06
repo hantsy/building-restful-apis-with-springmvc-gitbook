@@ -19,7 +19,7 @@ Java(TM) SE Runtime Environment (build 1.8.0_102-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 25.102-b14, mixed mode)
 ```
 
-##Apache Maven
+## Apache Maven
    
 Download the latest Apache Maven from [http://maven.apache.org](http://maven.apache.org), and uncompress it into your local system. 
 
@@ -53,15 +53,17 @@ The source codes are maven based, it is IDE independent, so you can selsect any 
 Spring Tool Suite is an Eclipse based IDE, and provides a lot of built-in Spring supports, it is highly recommended for new Spring users.
 
 Go to [Spring official site](https://spring.io), download a copy of [Spring Tool Suite](https://spring.io/tools/sts). At the moment, the latest version is 3.8.
+
+Alternatively, you can download a copy of Eclipse Java EE bundle from [Eclise official website](https://www.eclipse.org), and install the STS plugin from Eclipse Marketplace.
 	
-Extract the files into your local disk. Go to root folder, there is *STS.exe* file, double click it and starts up Spring Tool Suite.
+Extract the files into your local disk. Go to root folder, there is **STS.exe** file, double click it and starts up Spring Tool Suite.
 
-1. Open **Perference** window.
+1. Open IDE **Perference** window.
 2. Search `Annotation`...
-3. Enable **Annotation Processing** under *Compiler/ Annotation Processing*.
-4. Enable **Annotation Processing** under *Maven/Annotation Processing*, if it does not exists, install **m2e-apt** in **Maven/Discovery**.
+3. Expand *Compiler/ Annotation Processing* , enable **Annotation Processing**.
+4. Expand *Maven/Annotation Processing*, enable **Annotation Processing**. If it does not exists, install **m2e-apt** in **Maven/Discovery**.
 
-You have to install Lombok plugin(from EclipseMarket or follows [the Lombok guideline](https://projectlombok.org/setup/eclipse)) to enable Lombok support.
+Follow the official [the installation guideline](https://projectlombok.org/setup/eclipse)) to install Lombok plugin into your Eclipse IDE.
 
 ### Intellij IDEA	
 
@@ -81,8 +83,8 @@ You can install Lombok plugin from IDEA plugin manager to get IDE Lombok support
 
 ### NetBeans
 
-[NetBeans](http://www.netbeans.org) is the simplest IDE for Java developmentbrought, which was originally brought by Sun(and later maintained by Oracle), it is free and open source. Now it is contributed as a project under Apache foundation.
+[NetBeans](http://www.netbeans.org) is the simplest IDE for Java developmentbrought, which was originally brought by Sun(and later maintained by Oracle), it is free and open source. Now it is contributed as [an incubator project under Apache Foundation](http://netbeans.apache.org).
 
-In NetBeans, there is no need to setup Annotation Processing and Lombok.
+For NetBeans users, there is no need to setup Annotation Processing and Lombok, NetBeans has built-in Annotation processing capability.
 
 In the next posts, let's try to create a project skeleton for our blog sample application.
