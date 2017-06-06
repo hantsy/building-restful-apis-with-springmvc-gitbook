@@ -11,20 +11,23 @@ For example, when a user tries to register an account in this application. The s
 
 Define an exeption which stands for the exception path. For example, `ResourceNotFoundException` indicates an resource is not found in the applicatin when query the resource by id.
 
-	public class ResourceNotFoundException extends RuntimeException {
+```java
+public class ResourceNotFoundException extends RuntimeException {
 
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-		private final Long id;
+	private final Long id;
 
-		public ResourceNotFoundException(Long id) {
-			this.id = id;
-		}
-
-		public Long getId() {
-			return id;
-		}
+	public ResourceNotFoundException(Long id) {
+		this.id = id;
 	}
+
+	public Long getId() {
+		return id;
+	}
+}
+```	
+
 
 ## Throws exceptions in service
 
@@ -46,6 +49,8 @@ public PostDetails findPostById(Long id) {
 	return DTOUtils.map(post, PostDetails.class);
 }
 ```	
+
+Here, we have defined ResourceNotFoundException as a `RuntimeException`, and there is no `throws` clause in the method declaration. Benefit from Spring IOC container, we do not need to use caught exception to force callers to handle it explictly. Alternatively, we can define a specific exception handler later to process it gracefully.
 	
 ## Translates exceptions
 
@@ -55,7 +60,7 @@ In the presentation layer, these exceptions can be caught and converted into use
 
 Spring provides a built-in `ResponseEntityExceptionHandler` to handle the exceptions and translate them into REST API friendly messages.
 
-You can extend this class and override the exeption hanlder methods, or add your exception hanlder.
+You can extend this class and override the default exeption hanlder methods, or add your exception hanlder to handle custom exceptions.
 
 ```java
 @ControllerAdvice(annotations = RestController.class)
