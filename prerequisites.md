@@ -43,6 +43,7 @@ If you are a Gradle fan, you can use Gradle as build tool. Gradle could be an al
 
 I would like use Lombok to simply codes and make the codes clean. Go to [Lombok project](https://projectlombok.org/) to get know with Lombok.
 
+There is a good [introduction to Lombok](http://www.baeldung.com/intro-to-project-lombok) from baeldung's blog.
 
 ## IDE 
 
