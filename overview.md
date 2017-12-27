@@ -60,7 +60,7 @@ We also used some third party utilities, such as [Lombok project](https://projec
 
 For testing purpose, Spring test/JUnit, Mockito, Rest Assured will be used.
 
-##Smaple application
+##Sample application
 
 In order to demonstrate how to build RESTful APIs, I will implement a simple Blog system to explain it in details.
 
@@ -81,7 +81,7 @@ A normal user can execute the most common tasks.
 A administrater should have more advanced permissions, eg. he can manage the system users.
 
 1. Create a new user.
-2. Update uesr
+2. Update user
 3. Delete user
 4. Search users by keyword.
 
