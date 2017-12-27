@@ -63,7 +63,7 @@ public class User implements UserDetails, Serializable {
 
 ```
 
-Create a JPA entity to emplement the `UserDetails` interface.
+Create a JPA entity to implement the `UserDetails` interface.
 
 ```java
 @Component

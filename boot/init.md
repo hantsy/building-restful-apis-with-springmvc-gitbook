@@ -2,7 +2,7 @@
 
 [SPRING INITIALIZR](http://start.spring.io) provides a visual web UI to start a Spring Boot project. You can select which starter will be added in the project you will create.
 
-Open https://start.spring.io, search *Web*, *Secrity*, *JPA*, *Validation* in the **Dependencies** input box, select the items in the dropdown menus.
+Open https://start.spring.io, search *Web*, *Security*, *JPA*, *Validation* in the **Dependencies** input box, select the items in the dropdown menus.
 
 ![start.png](start.png)
 
@@ -101,13 +101,13 @@ public class DemoApplication {
 
 `@SpringBootApplication` is a meta-annotation, which is a combined annotation with `@EnableAutoConfiguration`, `@ComponentScan` and `@SpringBootConfiguration`.
 
-* `@EnableAutoConfiguration` enables the autoconfiguration detection by default.
-* `@SpringBootConfiguration` is similiar with `@Configuration`, it indicates the application is a Spring Boot application, and only allow one `@SpringBootConfiguration` in an application.
+* `@EnableAutoConfiguration` enables the auto configuration detection by default.
+* `@SpringBootConfiguration` is similar with `@Configuration`, it indicates the application is a Spring Boot application, and only allow one `@SpringBootConfiguration` in an application.
 * `@ComponentScan` defines the scope to find components, by default if not specify the package, it will scan the annotated class as base package. So it is recommended to put the `Application` in the root package.
 
 Besides these, nothing! Where are the configuration files?
 
-Spring Boot internally used plenty of auto-configuration mechanism to simplfy configurations for Spring developers. For this project, it configures a simple BASIC authentication by default. If you add a H2 database or other JDBC drivers, it will configure a datasource and transacation manager automaticially. 
+Spring Boot internally used plenty of auto-configuration mechanism to simplfy configurations for Spring developers. For this project, it configures a simple BASIC authentication by default. If you add a H2 database or other JDBC drivers, it will configure a DataSource and transaction manager automatically. 
 
 Till now, if you added some dependencies into `pom.xml`, you can start to code now. It is the quick way to prototype your application.
 

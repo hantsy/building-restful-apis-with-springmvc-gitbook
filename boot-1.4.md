@@ -2,7 +2,7 @@
 
 Spring Boot 1.4 is a big jump, and introduced lots of new test facilities and aligned with the new technology stack, such as Spring framework 4.3 and Hibernate 5.2 and Spring Security 4.1, etc.
 
-##Spring Boot 1.4
+## Spring Boot 1.4
 
 
 ### New starter:spring-boot-starter-test
@@ -45,7 +45,7 @@ Instead of:
 
 `spring-boot-starter-test` includes the essential dependencies for test, such as json-path, assertj, hamcrest, mockito etc.
 	
-###New annotation: @SpringBootTest
+### New annotation: @SpringBootTest
 
 Spring Boot 1.4 introduced a new annotation `@SpringBootTest` to unite the old `@IntegrationTest`, `@WebIntegrationTest`, `@SpringApplicationConfiguration` etc, in before versions.
 
@@ -71,7 +71,7 @@ Similarly, **classes** property is similar to the one of `@SpringApplicationConf
 
 The above code is equivalent to `@SpringApplicationConfiguration(classes={...})` in Spring Boot 1.3.
 
-###New JUnit Runner: SpringRunner
+### New JUnit Runner: SpringRunner
 
 Spring 1.4 introduced a new JUnit Runner, `SpringRunner`, which is an alias for the `SpringJUnit4ClassRunner`.
 
@@ -138,7 +138,7 @@ You can add your `@AutoconfigureXXX` annotation to override the default config.
 	public class TestClass{
 	}
 
-###JsonComponent
+### JsonComponent
 
 `@JsonComponent` is a specific `@Component` to register custome Jackson `JsonSerializer` and `JsonDeserializer`. 
 
@@ -171,7 +171,7 @@ For example, custom `JsonSerializer` and `JsonDeserializer` are use for serializ
 
 If you are using the Spring Boot default Jackson configuration, it will be activated by default when the application starts up.
 
-But if you customized a `ObjectMapper` bean in your configuration, the autoconfiguration of `ObjectMapper` is disabled. You have to install `JsonComponentModule` manually, else the `@JsonComponent` beans will not be scanned at all.
+But if you customized a `ObjectMapper` bean in your configuration, the auto configuration of `ObjectMapper` is disabled. You have to install `JsonComponentModule` manually, else the `@JsonComponent` beans will not be scanned at all.
 
     @Bean
     public Jackson2ObjectMapperBuilder objectMapperBuilder(JsonComponentModule jsonComponentModule) {
@@ -183,7 +183,7 @@ But if you customized a `ObjectMapper` bean in your configuration, the autoconfi
         return builder;
     } 
 
-###Mocking and spying Beans
+### Mocking and spying Beans
 
 Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockBean` and `@MockSpy` annotations.
 	
@@ -197,9 +197,9 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 	
 	
 	
-###TestConfiguration and TestComponent
+### TestConfiguration and TestComponent
 
-`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. Generic `Configuration` and `Component` can not be scanned by default in test.
+`TestConfiguration` and `TestComponent` are designated for test purpose, they are similar with `Configuration` and `Component`. Generic `Configuration` and `Component` can not be scanned by default in test codes.
 
 	public class TestClass{
 	
@@ -213,17 +213,17 @@ Spring Boot 1.4 integrates Mockito tightly, and provides Spring specific `@MockB
 	}
 
 	
-##Spring 4.3
+## Spring 4.3
 
 There are a few features added in 4.3, the following is impressive.
 
-###Composed annotations
+### Composed annotations
 
 The effort of [Spring Composed](https://github.com/sbrannen/spring-composed) are merged into Spring 4.3. 
 
 A series of new composed annotations are available, but the naming is a little different from Spring Composed.
 
-For example, a RestController can be simplfied by the new annotations, list as the following table.
+For example, a RestController can be simplified by the new annotations, list as the following table.
 
 |Spring 4.2| Spring 4.3|
 |----|----|
@@ -255,7 +255,7 @@ In Spring 4.3, it becomes:
 		}
 	}
 	
-###Auto constructor injection
+### Auto constructor injection
 
 If there is a only one constructor defined in the bean, the arguments as dependencies will be injected by default.	
 
@@ -283,7 +283,7 @@ Before 4.3, you have to add `@Inject` or `@Autowired` on the constructor to inje
 	}
 
 	
-##Spring Security 4.1
+## Spring Security 4.1
 
 The Java configuration is improved. 
 
@@ -312,7 +312,7 @@ Before 4.1, you can configure `passwordEncoder` and `userDetailsService` via `Au
 	  
 	}
 
-In 4.1, `userDetailsService` and `passwordEncoder` bean can be detected automaticially. No need to wire them by `AuthenticationManagerBuilder` manually. No need to override the `WebSecurityConfigurerAdapter` class and provide a custom configuration, a generic `WebSecurityConfigurerAdapter` bean is enough.
+In 4.1, `userDetailsService` and `passwordEncoder` bean can be detected automatically. No need to wire them by `AuthenticationManagerBuilder` manually. No need to override the `WebSecurityConfigurerAdapter` class and provide a custom configuration, a generic `WebSecurityConfigurerAdapter` bean is enough.
 
 	@Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -334,9 +334,9 @@ In 4.1, `userDetailsService` and `passwordEncoder` bean can be detected automati
 
 
 
-More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Secuirty documentation.
+More details can be found in the [What’s New in Spring Security 4.1](http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#new) chapter of Spring Security documentation.
 
-##Hibernate 5.2
+## Hibernate 5.2
 
 The biggest change of Hibernate 5.2 is the packages had been reorganised, Hibernate 5.2 is Java 8 ready now.
 
@@ -359,7 +359,7 @@ Remove the following dependencies when upgrade to Hibernate 5.2.
 
 Hibernate 5.2 also added Java Stream APIs support, I hope it will be available in the next JPA specification.
 
-##Source code
+## Source code
 
 Clone the codes from Github account.
 

@@ -1,10 +1,10 @@
-#Overview
+# Overview
 
 In this minibook, I will demonstrate how to implement a RESTful web application with Spring MVC and AngularJS. 
 
 It will be consist of a series of small posts as time goes by. Every post is a standalone chapter focused on a topic.
 
-##Assumption
+## Assumption
 
 I assume you are a Java developer and have some experience of Spring framework.
 
@@ -22,7 +22,7 @@ In these posts, it will not cover all Spring and Java EE features, but the follo
 
 	It provides a lightweight IOC container and a simple POJO based programming model, and also contains lots of glue codes for Java EE specification support and popular open source framework integration. 
 
-	With the benifit of Spring, it makes Java EE development without container become true, and also eases the Java EE testing. In the past years, Spring was considered as the defacto standard of Java EE development.
+	With the benefit of Spring, it makes Java EE development without container become true, and also eases the Java EE testing. In the past years, Spring was considered as the defacto standard of Java EE development.
 
 
 * Spring MVC
@@ -35,7 +35,7 @@ In these posts, it will not cover all Spring and Java EE features, but the follo
 
 * Spring Security
 
-	In a traditional Java EE application, JAAS is the specification which is responsible for Authentication and Authorization. But it is very dependent on a specific container. Although most containers include a visual web UI for user maangement. But if you want to manage users and roles in program way.
+	In a traditional Java EE application, JAAS is the specification which is responsible for Authentication and Authorization. But it is very dependent on a specific container. Although most containers include a visual web UI for user management. But if you want to manage users and roles in program way.
 
 	Spring Security fills this field, which makes the security control become easy, and provides a simple programming model. Spring Security is also compatible with JAAS specification, and provides JAAS integration at runtime. 
 
@@ -51,7 +51,7 @@ In these posts, it will not cover all Spring and Java EE features, but the follo
 
 * Spring Data JPA
 
-	Spring Data JPA simplifies using JPA in Spring, including a united `Repository` to perform simple CRUD without coding, simplfied type safe Criteria Query and QueryDSL integration, a simple auditing implementation, simple pagination support of query result, Java 8 Optional and DateTime support etc.
+	Spring Data JPA simplifies using JPA in Spring, including a united `Repository` to perform simple CRUD without coding, simplified type safe Criteria Query and QueryDSL integration, a simple auditing implementation, simple pagination support of query result, Java 8 Optional and DateTime support etc.
 
 	Check the Spring Data samples in [Spring4 sandbox](https://github.com/hantsy/spring4-sandbox).
 	 
@@ -60,7 +60,7 @@ We also used some third party utilities, such as [Lombok project](https://projec
 
 For testing purpose, Spring test/JUnit, Mockito, Rest Assured will be used.
 
-##Sample application
+## Sample application
 
 In order to demonstrate how to build RESTful APIs, I will implement a simple Blog system to explain it in details.
 
@@ -78,28 +78,28 @@ A normal user can execute the most common tasks.
 5. Delete posts.
 6. Comment on posts.
 
-A administrater should have more advanced permissions, eg. he can manage the system users.
+A administrator should have more advanced permissions, eg. he can manage the system users.
 
 1. Create a new user.
 2. Update user
 3. Delete user
 4. Search users by keyword.
 
-##Sample codes
+## Sample codes
 
 The complete sample codes are hosted on my Github.com account.
 
 [https://github.com/hantsy/angularjs-springmvc-sample](https://github.com/hantsy/angularjs-springmvc-sample)
 
-A Spring Boot based envolved version provides more featuers to demonstrate the cutting-edge technologies.
+A Spring Boot based evolved version provides more features to demonstrate the cutting-edge technologies.
 
 [https://github.com/hantsy/angularjs-springmvc-sample-boot](https://github.com/hantsy/angularjs-springmvc-sample-boot)
 
 Please read the README.md file in these respositories and run them under your local system.
 
-##Feedback
+## Feedback
 
-The source of this book are hosted on my github.com account.
+The source of this book are hosted on my Github.com account.
 
 [https://github.com/hantsy/angularjs-springmvc-sample-gitbook](https://github.com/hantsy/angularjs-springmvc-sample-gitbook)
 

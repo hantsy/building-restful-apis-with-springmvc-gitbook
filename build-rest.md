@@ -1,4 +1,4 @@
-#Building REST API
+# Building REST API
 
 As stated in before posts, we are going to build a Blog system.
 
@@ -56,7 +56,7 @@ It is a standard JPA entity.
 * An entity class must be annotated with `@Entity`
 * An entity should implement `Serializable` interface
 * An entity must include an identifier field(annotated with `@Id`), such as `id` of `Post`.
-* An entity should have a default none-arguments constructor. By default, if there is no explict constructor declaration, there is an implict none-argument constructor. If there is a constructor accepts more than one arguments, you have to add another none-argument explictly.
+* An entity should have a default none-arguments constructor. By default, if there is no explicit constructor declaration, there is an implicit none-argument constructor. If there is a constructor accepts more than one arguments, you have to add another none-argument explicitly.
 
 	For example.
 	
@@ -77,7 +77,7 @@ For example, there are a post existed in a collection, adding another `Post` int
 		}
 	}
 	
-The title field can be used to identify two posts in a collection, because they are not presisted in a persistent storage at the moment, `id` value are same--null.
+The title field can be used to identify two posts in a collection, because they are not persisted in a persistent storage at the moment, `id` value are same--null.
 
 Implements `equals` and `hashCode` with title field of `Post`.
 
@@ -100,7 +100,7 @@ By default, it is `AUTO`, which uses the database built-in id generation approac
 
 Other id generation strategies include *TABLE*, *IDENTITY*. And JPA providers have their extensions, such as with Hibernate, you can use *uuid2* for PostgresSQL. 	
 
-###Lombok
+### Lombok
 	
 [Lombok](http://projectlombok.org) is a greate helper every Java developer should use in projects. Utilize Java annotation processor, it can generate getters, setters, equals, hashCode, toString and class constructor at compile runtime with some Lombok annotations.
 
@@ -148,7 +148,7 @@ Add lombok dependency in *pom.xml*.
 		<version>${lombok.version}</version>
 	</dependency>
 
-If there are several JAP(Java annotaition processor) exist in the project, such as JPA metadata generator, it is better to add Lombok processor to maven compiler plugin.
+If there are several JAP(Java annotation processor) exist in the project, such as JPA metadata generator, it is better to add Lombok processor to maven compiler plugin.
 
 For example.
 
@@ -165,7 +165,7 @@ For example.
 		</configuration>
 	</plugin>
 
-**NOTE**: If you are using Eclipse based IDE, such as Spring Tool Suite, or Intellij IDEA, you could have to install the Lombok plugin manually, check the [Lombok download page](https://projectlombok.org/download.html) for installation information. Luckily, NetBeans IDE can recognise the Lombok facilities automatcially.
+**NOTE**: If you are using Eclipse based IDE, such as Spring Tool Suite, or Intellij IDEA, you could have to install the Lombok plugin manually, check the [Lombok download page](https://projectlombok.org/download.html) for installation information. Luckily, NetBeans IDE can recognize the Lombok facilities automatically.
 
 Unlike JPA metadata generator which generates metedata source for JPA entities. Lombok modifies target classes directly.
 
@@ -215,7 +215,7 @@ Compare to following legacy new an object, the Builder pattern is more friendly 
 	post.setTitle("title of my first post");
 	post.setContent("content of my first post");
 	
-###Model associations
+### Model associations
 
 Let's create other related models, `Comment` and `User`.
 
@@ -344,13 +344,13 @@ A `Post` should have an author.
 
 Generally, in Spring application, in order to make JPA work, you have to configure a `DataSource`, `EntityManagerFactory`, `TransactionManager`.
 
-###JPA overview
+### JPA overview
 
-JPA standardised Hibernate and it is part of Java EE specification since Java EE 5. Currently there are some popular JPA providers, such as Hibernate, OpenJPA, EclipseLink etc. EclipseLink is shipped wtih Glassfish, and Hibernate is included JBoss Wildfly/Redhat EAP.
+JPA standardized Hibernate and it is part of Java EE specification since Java EE 5. Currently there are some popular JPA providers, such as Hibernate, OpenJPA, EclipseLink etc. EclipseLink is shipped with Glassfish, and Hibernate is included JBoss Wildfly/Redhat EAP.
 
 In the above Modeling section, we have created models, which are JPA entities. In this section, let's see how to make it work.
 
-####Configure DataSources
+#### Configure DataSources
 
 Like other ORM frameworks, you have to configure a DataSource.
 
@@ -398,9 +398,9 @@ The [DataSourceConfig](https://github.com/hantsy/angularjs-springmvc-sample/blob
 
 	}
 
-In development stage("dev" profile is activated), using an embedded database is more easy to write tests, and speeds up development progress. In an integration server, it is recommended to run the appliation and integration tests on an environment close to production deployment. In a production environment,most of case, using a container managed datasource is effective.
+In development stage("dev" profile is activated), using an embedded database is more easy to write tests, and speeds up development progress. In an integration server, it is recommended to run the application and integration tests on an environment close to production deployment. In a production environment,most of case, using a container managed `DataSource` is effective.
 
-The Spring profile can be activiated by an environment varible: `spring.profiles.active`. In our case, I used maven to set `spring.profiles.active` at compile time.
+The Spring profile can be activated by an environment variable: `spring.profiles.active`. In our case, I used maven to set `spring.profiles.active` at compile time.
 
 1. In the maven profile section, there is `spring.profiles.active` property defined. eg.
 
@@ -479,7 +479,7 @@ For example,
 
 If you want to explore all methods provided in EntityManager, check [EntityManager javadoc](http://docs.oracle.com/javaee/7/api/javax/persistence/EntityManager.html). 
 
-###Spring Data JPA
+### Spring Data JPA
 
 Spring Data JPA simplifies JPA, please read [an early post I wrote to discuss this topic](http://hantsy.blogspot.com/2013/10/spring-data-jpa.html).
 
@@ -575,11 +575,11 @@ And you want to get a pageable result, you can use like this, just add a `Pageab
 
 	Page<Post> posts = postRepository.findAll(PostSpecifications.filterByKeywordAndStatus(q, status), page);
 			
-`page` argument is a `Pageable` object which can transfer pagination parameters from client request, and return result is a typed `Page` object, it includes the items of the current page and page naviation meta, such as total items, etc.	
+`page` argument is a `Pageable` object which can transfer pagination parameters from client request, and return result is a typed `Page` object, it includes the items of the current page and page navigation meta, such as total items, etc.	
 
 ## Application Service
 
-A service can delegate CRUD operations to repository, also act as gateway to other bound context, such as messageing, sending email, fire events etc.
+A service can delegate CRUD operations to repository, also act as gateway to other bound context, such as messaging, sending email, fire events etc.
 
 	@Service
 	@Transactional
@@ -681,7 +681,7 @@ Validation annotations can be applied on it.
 		
 	}	
 
-Some exceptions are threw in the service if the input data can not satisfy the requirements. In the furthur post, I will focus on *exception handling* topic.
+Some exceptions are threw in the service if the input data can not satisfy the requirements. In further posts, I will focus on *exception handling* topic.
 
 There is a `DTOUtils` which is responsible for data copy from one class to another class. 
 
@@ -733,9 +733,9 @@ It used the effort of [ModelMapper project](http://modelmapper.org/).
 	
 ## Produces REST APIs with Spring MVC
 
-Like other traditional action based framework, such as Apache Struts, etc, Spring MVC implements the standard MVC pattern. But against the benifit of IOC container, each parts of Spring MVC are not coupled, esp. view and view resolver are pluginable and can be configured. 
+Like other traditional action based framework, such as Apache Struts, etc, Spring MVC implements the standard MVC pattern. But against the benefit of IOC container, each parts of Spring MVC are not coupled, esp. view and view resolver are pluggable and can be configured. 
 
-For RESTful applications, JSON and XML are the commonly used exchange format, we do not need a template engine(such as Freemarker, Apache Velocity) for view, Spring MVC will detect HTTP headers, such as *Content Type*, *Accept Type*, etc. to determine how to produce corresponding view result. Most of the time, we do not need to configure the view/view resolver explictly. This is called *Content negotiation*. There is a `ContentNegotiationManager` bean which is responsible for *Content negotiation* and enabled by default in the latest version.
+For RESTful applications, JSON and XML are the commonly used exchange format, we do not need a template engine(such as Freemarker, Apache Velocity) for view, Spring MVC will detect HTTP headers, such as *Content Type*, *Accept Type*, etc. to determine how to produce corresponding view result. Most of the time, we do not need to configure the view/view resolver explicitly. This is called *Content negotiation*. There is a `ContentNegotiationManager` bean which is responsible for *Content negotiation* and enabled by default in the latest version.
 
 The configuration details are motioned in before posts. We are jumping to write `@Controller` to produce REST APIs.
 
@@ -863,7 +863,7 @@ Execute this in the command line to start this application.
 
     mvn tomcat7:run
 
-**NOTE**: The tomcat maven plugin development is not active, if you are using Servlet 3.1 features, you could have to use other plugin instead. 
+**NOTE**: The tomcat maven plugin development is not active, if you are using Servlet 3.1 features, you could have to use other plugins instead. 
 
 Jetty is the fastest embedded Servlet container and wildly used in development community. 
 
@@ -885,7 +885,7 @@ Execute the following command to run the application on an embedded Jetty server
 
     mvn jetty:run	
 
-Another frequently used is Cargo which provides support for all popular applcation servers, and ready for all hot build tools, such as Ant, Maven, Gradle etc.
+Another frequently used is Cargo which provides support for all popular application servers, and ready for all hot build tools, such as Ant, Maven, Gradle etc.
 
 	<plugin>
 		<groupId>org.codehaus.cargo</groupId>
@@ -915,7 +915,7 @@ For Spring boot application, it is simple, just run the application like this.
 
 By default, it uses Tomcat embedded server, but you can switch to Jetty and JBoss Undertow if you like. Check the Spring boot docs for details.
 
-##Source Code
+## Source Code
 
 Check out sample codes from my github account.
 

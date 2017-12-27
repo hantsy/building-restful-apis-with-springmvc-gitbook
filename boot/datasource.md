@@ -2,7 +2,7 @@
 
 Instead of configuring `DataSource` in Java code.
 
-Spring Boot provides built-in `application.properties`(or `applicatoin.yml` for YAML format) to configure `DataSource` in project specific file.
+Spring Boot provides built-in `application.properties`(or `application.yml` for YAML format) to configure `DataSource` in project specific file.
 
 Create a *application.yml* in *src/main/resources* folder. It will override the default configuration. 
 

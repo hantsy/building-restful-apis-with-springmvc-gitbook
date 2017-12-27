@@ -1,18 +1,18 @@
-#Testing
+# Testing
 
-Before release your applicaiton to the public world, you have to make sure it works as expected.
+Before release your application to the public world, you have to make sure it works as expected.
 
 Testing is the most effective way to prove your codes correct.
 
-##Test driven development
+## Test driven development
 
 In the XP and Agile world, lots of developers are TDD advocate, and use it in daily work.
 
-The basic flow of TDD can be summaried as:
+The basic flow of TDD can be summaries as:
 
 1. Write a test first, then run test and get failure, failure info indicates what to do(You have not written any codes yet).
 2. Code the implementation, and run test again and again, untill the test get passed.
-3. Adjust the test to add more featurs, and refactor the codes, till all considerations are included.
+3. Adjust the test to add more features, and refactor the codes, till all considerations are included.
 
 But some developers prefer writing codes firstly and then write tests to verify them, it is OK. There is no policy to force you accept TDD. For a skilled developer, both are productive in work.
 
@@ -20,9 +20,9 @@ We have written some codes in the early posts, now it is time to add some test c
 
 Spring provides a test context environment for developers, it supports JUnit and TestNG.
 
-In this sample applcation, I will use JUnit as test runner, also use [Mockito](http://mockito.org) to test service in isolation, and use [Rest Assured](http://rest-assured.io/) BDD like fluent APIs to test REST from client view.
+In this sample application, I will use JUnit as test runner, also use [Mockito](http://mockito.org) to test service in isolation, and use [Rest Assured](http://rest-assured.io/) BDD like fluent APIs to test REST from client view.
 
-##A simple POJO test
+## A simple POJO test
 
 A classic JUnit test could look like this.
 
@@ -64,7 +64,7 @@ A classic JUnit test could look like this.
 
 	}
 
-`@BeforeClass` and `AfterClass` method must be *static*, these will be executed after the test class is constructed and before it is destoryed.
+`@BeforeClass` and `AfterClass` method must be *static*, these will be executed after the test class is constructed and before it is destroyed.
 
 `@Before` and `@After` will be executed around a test case.
 
@@ -90,7 +90,7 @@ You could see the following output summary for this test.
 	
 `Post` is a simple POJO, does not depend on other dependencies.	
 
-##Test Service
+## Test Service
 
 `BlogService` depends on `PostRepository`, but most of time, we only want to check if the business logic and flow correct in the `BlogService` and assume the dependency `PostRepository` are always working as expected. Thus it is easy to focus on testing `BlogService` itself. 
 
@@ -307,15 +307,15 @@ The test result should be shown as below.
 
 	Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
 	
-##Test Controller
+## Test Controller
 
-Spring provides a sort of mock APIs to emulate a Servlet container environment, thus it is possbile to test MVC related feature without a real container.
+Spring provides a sort of mock APIs to emulate a Servlet container environment, thus it is possible to test MVC related feature without a real container.
 
-###Use MockMvc with mocked service
+### Use MockMvc with mocked service
 
 MockMvc does not need a Servlet container, but can test most of the Controller features.
 
-Like the former `MockBlogServiceTest`, we can mock the controller's dependencies, thus is no need to load Spring configuraitons. 
+Like the former `MockBlogServiceTest`, we can mock the controller's dependencies, thus is no need to load Spring configurations. 
 
 
 	@RunWith(MockitoJUnitRunner.class)
@@ -466,7 +466,7 @@ Like the former `MockBlogServiceTest`, we can mock the controller's dependencies
 
 In the `setup` method, `mvc = standaloneSetup(postController)` is trying to setup a `MockMvc` for controller. The test codes are easy to understand.
 
-###MockMvc with a real database	
+### MockMvc with a real database	
 
 We changed a little on the above tests, replace the mocked service with the real configurations. Thus the tests will run against a real database, but still in mock mvc environment.
 
@@ -564,9 +564,9 @@ We changed a little on the above tests, replace the mocked service with the real
 
 	}
 
-In this test class, the Mockito codes are replaced with Spring test, and load the configuraitons defined in this project. It is close to the final production environment, except there is not a real Servlet container.
+In this test class, the Mockito codes are replaced with Spring test, and load the configurations defined in this project. It is close to the final production environment, except there is not a real Servlet container.
 
-###Test REST API as the client view
+### Test REST API as the client view
 
 OK, now try to verify everything works in a real container.
 
@@ -671,7 +671,7 @@ OK, now try to verify everything works in a real container.
 		}
 	}
 
-To run this test successfully, you have to configure *maven-failsafe-plugin* to set up a servlet container.
+To run this test successfully, you have to configure *maven-failsafe-plugin* to set up a Servlet container.
 
 * Start up container before test is running 
 * Shutdown the servlet container after the test is completed
@@ -716,7 +716,7 @@ Excludes the `IntegrationTest` in the *maven-surefire-plugin*.
 		</executions>
 	</plugin>
 	
-Filter the `IntegrationTest` in the *maven-failsafe-plugin*. Here I configured jetty as servlet container to run the test.		
+Filter the `IntegrationTest` in the *maven-failsafe-plugin*. Here I configured jetty as Servlet container to run the test.		
 
 	<plugin>
 		<groupId>org.eclipse.jetty</groupId>
@@ -775,7 +775,7 @@ In the console, after all unit tess are done, it will start jetty and deploy the
 
 As you see in the console, after the test is done, it is trying to shutdown jetty.	
 
-###Rest Assured
+### Rest Assured
 
 Rest Assured provides BDD like syntax, such as *given*, *when*, *then*, it is friendly for those familiar with BDD.
 
@@ -916,7 +916,7 @@ The above Rest Assured sample codes are available in the [Spring Boot version](h
 
 It also includes a simple JBehave sample, if you are a JBehave user, you maybe interested in it.
 
-##Source Code
+## Source Code
 
 Check out sample codes from my github account.
 
@@ -926,5 +926,5 @@ Or the Spring Boot version:
 
 	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
 	
-Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
+Read the live version of these posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
 	

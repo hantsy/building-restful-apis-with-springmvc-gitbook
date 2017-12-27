@@ -12,7 +12,7 @@
 	* [Configure Spring Security](getting-started/security.md)
 	* [Configure Swagger](getting-started/security.md)
 	* [Maven profiles and Spring profiles](getting-started/profile.md)
-* [Gettting started with Spring Boot](boot-gs.md)
+* [Getting started with Spring Boot](boot-gs.md)
 	* [Project skeleton](boot/init.md)
 	* [Configure Datasource](boot/datasource.md)
 	* [Configure JPA](boot/jpa.md)

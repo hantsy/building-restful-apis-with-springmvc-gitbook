@@ -1,17 +1,17 @@
-#Secures APIs
+# Secures APIs
 
 We have configured Spring Security in before posts. 
 
-In this post, I will show you using Spring Security to protect APIs, aka provides Anthentication and Anthorization service for this sample application.
+In this post, I will show you using Spring Security to protect APIs, aka provides Authentication and Authorization service for this sample application.
 
 * **Authentication** answers the question: if the user is a valid user.
 * **Authorization** resolves the problem: if the authenticated user has corresponding permissions to access resources.
 
-##Authentication
+## Authentication
 
-In Spring security, it is easy to configure JAAS compatible authentication strategy, such as FORM, BASIC, X509 Certiciate etc. 
+In Spring security, it is easy to configure JAAS compatible authentication strategy, such as FORM, BASIC, X509 Certificate etc. 
 
-Unlike JAAS in which the authentication management is very dependent on the container itself. Spring Security provides some extension points(such as `UserDetails`, `UserDetailsService`, `Authority`) and allows developers to customize and implement the authentication and authorization in a progammatic approach. 
+Unlike JAAS in which the authentication management is very dependent on the container itself. Spring Security provides some extension points(such as `UserDetails`, `UserDetailsService`, `Authority`) and allows developers to customize and implement the authentication and authorization in a programmatic approach. 
 
 Motioned in before posts, the simplest way to configure Spring security is using `AuthenticationManagerBuilder` to build essential required resources. 
 
@@ -148,7 +148,7 @@ Then configure `AuthenticationManager` with custom `UserDetailsService` instead 
 	
 If you want to design a customized Authentication strategy, you could have to create a custom `AuthenticationEntryPoint` and `AuthenticationProvider` for it. We will discuss this later.
 
-##Anthorization
+## Authorization
 
 Once user is authenticated, when he tries to access some resources, such as URL, or execute some methods, it should check if the resource is protected, or has granted permissions on executing the methods.
 
@@ -173,7 +173,7 @@ Override the `configure(HttpSecurity)` of `WebSecurityConfigurerAdapter`.
 				//....
 		}
 
-The access control is filter by the `Matcher`, there are two built-in matchers, Apache Ant path matcher, and perl like regex matchers. The later is a little complex, but more powerful. 	
+The access control is filter by the `Matcher`, there are two built-in matchers, Apache Ant path matcher, and Perl like regex matchers. The later is a little complex, but more powerful. 	
 
 `http...antMatchers("/api/**").authenticated()` means all resource URLs match '/api/**' need a valid authentication.
 
@@ -220,7 +220,7 @@ And only the post owner can update the post.
 
 Spring provides APIs to fetch current principal info. 
 
-For example, get current Authetication from SecurityContextHolder.
+For example, get current Authentication from `SecurityContextHolder`.
 
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -232,7 +232,7 @@ After got the security principal info, you can control the authorizations in cod
 
 
 
-##Source Code
+## Source Code
 
 Check out sample codes from my github account.
 
@@ -242,7 +242,7 @@ Or the Spring Boot version:
 
 	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
 	
-Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
+Read the live version of theses posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
 
 
 

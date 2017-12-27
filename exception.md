@@ -160,7 +160,7 @@ Or the Spring Boot version:
 git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
 ```
 	
-Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
+Read the live version of these posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
 
 
 

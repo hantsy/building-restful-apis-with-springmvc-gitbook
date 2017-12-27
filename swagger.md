@@ -1,4 +1,4 @@
-#Visualizes REST APIs with Swagger
+# Visualizes REST APIs with Swagger
 
 Swagger is widely used for visualizing APIs, and with Swagger UI it provides online sandbox for frontend developers.
 
@@ -369,7 +369,7 @@ Combined with Springfox, [Swagger2Markup project](https://github.com/Swagger2Mar
 	![pdf](apidocs-pdf.png)
 	
 
-##Source Code
+## Source Code
 
 Check out sample codes from my github account.
 
@@ -379,5 +379,5 @@ Or the Spring Boot version:
 
 	git clone https://github.com/hantsy/angularjs-springmvc-sample-boot
 	
-Read the live version of thess posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
+Read the live version of theses posts from Gitbook:[Building RESTful APIs with Spring MVC](https://www.gitbook.com/book/hantsy/build-a-restful-app-with-spring-mvc-and-angularjs/details).
 
