@@ -54,7 +54,7 @@ Here, we have defined ResourceNotFoundException as a `RuntimeException`, and the
 	
 ## Translates exceptions
 
-Internally, Spring has a series of built-in `ExceptionTranslator`s to translate the exceptions to Spring declarative approaches, eg. all JDBC exceptions are translated to Spring defined exceptions(DataAccessException and its subclasses). 
+Internally, Spring has a series of built-in `ExceptionTranslator`s to translate the exceptions to Spring declarative approaches, eg. all JDBC related exceptions are translated to Spring defined exceptions( `DataAccessException` and its subclasses), see [here](https://github.com/hantsy/spring-sandbox/wiki/data-access-support-overview) fore more details. 
 
 In the presentation layer, these exceptions can be caught and converted into user friendly message.
 
